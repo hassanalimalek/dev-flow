@@ -1,5 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
+import ThemeSwitcher from "../themeSwitcher";
+import GlobalSearch from "../search/globalSearch";
+import MobileNav from "./mobileNav";
 // import ThemeSwitcher from "../../ThemeSwitcher";
 
 // import { SignedIn, UserButton } from "@clerk/nextjs";
@@ -14,7 +17,7 @@ const Navbar = () => {
     w-full gap-5 p-6 shadow-light-300 
     dark:shadow-none sm:px-12"
     >
-      <Link href="/" className="flex items-center gap-1 bg-red-500">
+      <Link href="/" className="flex items-center gap-1 ">
         <Image
           src="/assets/images/site-logo.svg"
           width={23}
@@ -25,10 +28,10 @@ const Navbar = () => {
           Dev <span className="text-primary-500"> Overflow</span>
         </p>
       </Link>
-      {/* <GlobalSearch /> */}
-      {/* <div className="flex-between gap-5">
+      <GlobalSearch />
+      <div className="flex-between gap-5">
         <ThemeSwitcher />
-        <SignedIn>
+        {/* <SignedIn>
           <UserButton
             afterSignOutUrl="/"
             appearance={{
@@ -41,8 +44,9 @@ const Navbar = () => {
             }}
           />
         </SignedIn>
+        <MobileNav /> */}
         <MobileNav />
-      </div> */}
+      </div>
     </nav>
   );
 };
