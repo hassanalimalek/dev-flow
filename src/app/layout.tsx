@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/context/themeContext";
+import { ClerkProvider } from "@clerk/nextjs";
+import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -25,10 +27,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${inter.variable} ${spaceGrotesk.variable} `}>
-        <ThemeProvider>{children}</ThemeProvider>
-      </body>
-    </html>
+    <ClerkProvider
+      appearance={{
+        elements: {
+          formButtonPrimary: "primary-gradient",
+          footerActionLink: "primary-text-gradient",
+          hover: "text-primary-500",
+        },
+      }}
+    >
+      <ThemeProvider>
+        <html lang="en">
+          <body className={`${inter.variable} ${spaceGrotesk.variable} `}>
+            {children}
+            <Toaster />
+          </body>
+        </html>
+      </ThemeProvider>
+    </ClerkProvider>
   );
 }
