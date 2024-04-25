@@ -14,7 +14,11 @@ export const ThemeContext = createContext<{
 });
 
 // Create a provider component for the theme context
-export const ThemeProvider: React.FC = ({ children }: any) => {
+interface ThemeProviderProps {
+  children: React.ReactNode;
+}
+
+export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const [theme, setTheme] = useState<Theme>("light");
 
   // Function to toggle the theme
