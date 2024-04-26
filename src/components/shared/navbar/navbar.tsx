@@ -3,6 +3,7 @@ import Image from "next/image";
 import ThemeSwitcher from "../themeSwitcher";
 import GlobalSearch from "../search/globalSearch";
 import MobileNav from "./mobileNav";
+import { SignedIn, UserButton } from "@clerk/nextjs";
 // import ThemeSwitcher from "../../ThemeSwitcher";
 
 // import { SignedIn, UserButton } from "@clerk/nextjs";
@@ -31,7 +32,7 @@ const Navbar = () => {
       <GlobalSearch />
       <div className="flex-between gap-5">
         <ThemeSwitcher />
-        {/* <SignedIn>
+        <SignedIn>
           <UserButton
             afterSignOutUrl="/"
             appearance={{
@@ -44,7 +45,7 @@ const Navbar = () => {
             }}
           />
         </SignedIn>
-        <MobileNav /> */}
+        <MobileNav />
         <MobileNav />
       </div>
     </nav>
