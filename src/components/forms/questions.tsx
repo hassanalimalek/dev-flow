@@ -32,19 +32,17 @@ interface Props {
 const Question = ({ type, mongoUserId, questionDetails }: Props) => {
   // Text Editor ref
   const editorRef = useRef(null);
-  console.log("reve mongoUserId", mongoUserId);
-
   const [isSubmitting, setIsSubmitting] = useState(false);
-  console.log(" isSubmitting --<>", isSubmitting);
+
   // Router
   const router = useRouter();
   const pathname = usePathname();
   console.log("pathname --->", pathname);
 
-  // For editor dark and light mode
-  const { mode } = useTheme();
+  // For editor dark and light theme
+  const { theme } = useTheme();
 
-  // In edit mode data will be shown by default
+  // In edit theme data will be shown by default
   const parsedQuestionDetails =
     questionDetails && JSON.parse(questionDetails || "");
   const groupedTags = parsedQuestionDetails?.tags.map((tag: any) => tag.name);
@@ -88,7 +86,7 @@ const Question = ({ type, mongoUserId, questionDetails }: Props) => {
           title: values.title,
           content: values.explanation,
           tags: values.tags,
-          author: mongoUserId,
+          author: JSON.parse(mongoUserId),
           path: pathname,
         });
 
@@ -229,8 +227,8 @@ const Question = ({ type, mongoUserId, questionDetails }: Props) => {
                       "alignright alignjustify | bullist numlist",
                     content_style:
                       "body { font-family:Inter,sans-serif; font-size:16px }",
-                    skin: mode === "dark" ? "oxide-dark" : "oxide",
-                    content_css: mode === "dark" && "dark",
+                    skin: theme === "dark" ? "oxide-dark" : "oxide",
+                    content_css: theme === "dark" && "dark",
                   }}
                 />
               </FormControl>

@@ -1,10 +1,9 @@
 "use server";
 import Question from "@/database/question.modal";
-import { connectToDatabase } from "../moongoose";
+import { connectToDatabase } from "../mongoose";
 import Tag from "@/database/tag.modal";
 import User from "@/database/user.modal";
 import { CreateQuestionParams } from "./shared.types";
-import mongoose from "mongoose";
 import { revalidatePath } from "next/cache";
 
 export async function getQuestions() {
@@ -22,16 +21,15 @@ export async function getQuestions() {
 
 export async function createQuestion(params: CreateQuestionParams) {
   // eslint-disable-next-line no-useless-catch
-  console.log("questionData", params);
   try {
     connectToDatabase();
     const { title, content, tags, author, path } = params;
+
     // Create the question
-    console.log("tags --->", tags);
     const question = await Question.create({
       title,
       content,
-      author: new mongoose.Types.ObjectId(),
+      author,
     });
     const tagDocuments = [];
     for (const tag of tags) {
