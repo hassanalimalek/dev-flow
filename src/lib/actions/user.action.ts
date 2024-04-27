@@ -9,6 +9,7 @@ import {
   GetSavedQuestionsParams,
   GetUserByIdParams,
   ToggleSaveQuestionParams,
+  UpdateUserParams,
 } from "./shared.types";
 import { FilterQuery } from "mongoose";
 import Tag from "@/database/tag.modal";
@@ -97,23 +98,21 @@ export const createUser = async (params: any) => {
   }
 };
 
-export const updateUser = async (params: any) => {
-  // eslint-disable-next-line no-useless-catch
+export async function updateUser(params: UpdateUserParams) {
   try {
     connectToDatabase();
 
     const { clerkId, updateData, path } = params;
 
-    const user = await User.findOneAndUpdate({ clerkId }, updateData, {
-      new: true,
+    await User.findOneAndUpdate({ clerkId }, updateData, {
+      new: true, // new instance of that user
     });
+
     revalidatePath(path);
-    return user;
   } catch (error) {
-    console.error(`❌ ${error} ❌`);
-    throw error;
+    console.log(error);
   }
-};
+}
 
 export const deleteUser = async (params: any) => {
   // eslint-disable-next-line no-useless-catch

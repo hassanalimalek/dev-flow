@@ -63,9 +63,11 @@ function ProfileCardHeader({ data }: any) {
             <p className="mt-6 body-regular">Profile Description</p>
           </div>
           <div>
-            <button className="px-6 py-3 btn-secondary rounded body-regular text-dark200_light900">
-              Edit Profile
-            </button>
+            <Link href={`/profile/edit`}>
+              <button className="px-6 py-3 btn-secondary rounded body-regular text-dark200_light900">
+                Edit Profile
+              </button>
+            </Link>
           </div>
         </div>
       </div>

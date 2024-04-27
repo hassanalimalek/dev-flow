@@ -32,6 +32,20 @@ export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
     throw error;
   }
 }
+export async function getPopularTags() {
+  try {
+    connectToDatabase();
+    const popularTags = await Tag.aggregate([
+      { $project: { name: 1, numberofQuestions: { $size: "$questions" } } },
+      { $sort: { numberofQuestions: -1 } },
+      { $limit: 5 },
+    ]);
+    return popularTags;
+  } catch (error) {
+    console.error(`❌ ${error} ❌`);
+    throw error;
+  }
+}
 
 export async function getAllTags(params: GetAllTagsParams) {
   try {
