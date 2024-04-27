@@ -7,9 +7,15 @@ import { Button } from "@/components/ui/button";
 import { sidebarLinks } from "@/constants";
 import { usePathname } from "next/navigation";
 import { SignedOut } from "@clerk/nextjs";
+import { useUser } from "@clerk/clerk-react";
 
 function LeftSidebar() {
+  //   const { userId } = auth();
+  const { user } = useUser();
+  console.log("user @@-->", user);
+  const userId = user?.id;
   const pathname = usePathname();
+
   return (
     <div className="custom-scrollbar background-light900_dark200 light-border sticky left-0 top-0 flex h-screen w-fit flex-col justify-between  overflow-y-auto border-r p-6 pt-36 shadow-light-300 dark:shadow-none max-sm:hidden lg:w-[266px]">
       <section className="flex h-full flex-col gap-6">
@@ -17,6 +23,13 @@ function LeftSidebar() {
           const isActive =
             (pathname.includes(item.route) && item.route.length > 1) ||
             pathname === item.route;
+          if (item.route === "/profile") {
+            if (userId) {
+              item.route = `/profile/${userId}`;
+            } else {
+              return null;
+            }
+          }
           return (
             <Link
               key={item.route}

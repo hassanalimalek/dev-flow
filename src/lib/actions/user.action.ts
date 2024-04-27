@@ -7,12 +7,14 @@ import Question from "@/database/question.modal";
 import {
   GetAllUsersParams,
   GetSavedQuestionsParams,
+  GetUserByIdParams,
   ToggleSaveQuestionParams,
 } from "./shared.types";
 import { FilterQuery } from "mongoose";
 import Tag from "@/database/tag.modal";
+import Answer from "@/database/answer.modal";
 
-export const getUserById = async (params: any) => {
+export const getUserById = async (params: GetUserByIdParams) => {
   // eslint-disable-next-line no-useless-catch
   try {
     connectToDatabase();
@@ -22,6 +24,21 @@ export const getUserById = async (params: any) => {
     const user = await User.findOne({ clerkId: userId });
     console.log("user ---->>>>", user);
     return user;
+  } catch (error) {
+    console.error(`❌ ${error} ❌`);
+    throw error;
+  }
+};
+
+export const getUserInfo = async (params: GetUserByIdParams) => {
+  try {
+    connectToDatabase();
+    const { userId } = params;
+    const user = await User.findOne({ clerkId: userId });
+    const totalQuestions = await Question.countDocuments({ author: user?._id });
+    const totalAnswers = await Answer.countDocuments({ author: user?._id });
+
+    return { user, totalQuestions, totalAnswers };
   } catch (error) {
     console.error(`❌ ${error} ❌`);
     throw error;
@@ -191,7 +208,7 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
         break;
 
       case "most_voted":
-        sortOption = { upvotes: -1 };
+        sortOption = { upVotes: -1 };
         break;
       case "most_viewed":
         sortOption = { views: -1 };
