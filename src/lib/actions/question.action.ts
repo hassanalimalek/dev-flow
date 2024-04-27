@@ -8,6 +8,7 @@ import User from "@/database/user.modal";
 import {
   CreateQuestionParams,
   DeleteQuestionParams,
+  EditQuestionParams,
   QuestionVoteParams,
 } from "./shared.types";
 import { revalidatePath } from "next/cache";
@@ -48,19 +49,26 @@ export async function createQuestion(params: CreateQuestionParams) {
   }
 }
 
-export async function getQuestionById(id: string) {
-  // eslint-disable-next-line no-useless-catch
-
+export async function editQuestion(params: EditQuestionParams) {
   try {
-    if (id) {
-      connectToDatabase();
-      return await Question.findById(id)
-        .populate("tags", { modal: Tag })
-        .populate("author", { modal: User });
+    connectToDatabase();
+
+    const { questionId, title, content, path } = params;
+
+    const question = await Question.findById(questionId).populate("tags");
+
+    if (!question) {
+      throw new Error("Question not found");
     }
-  } catch (e) {
-    console.log("error in getQuestionById", e);
-    throw e;
+
+    question.title = title;
+    question.content = content;
+
+    await question.save();
+
+    revalidatePath(path);
+  } catch (error) {
+    console.log(error);
   }
 }
 
@@ -83,6 +91,22 @@ export async function deleteQuestion(params: DeleteQuestionParams) {
   }
 }
 
+export async function getQuestionById(id: string) {
+  // eslint-disable-next-line no-useless-catch
+
+  try {
+    if (id) {
+      connectToDatabase();
+      return await Question.findById(id)
+        .populate("tags", { modal: Tag })
+        .populate("author", { modal: User });
+    }
+  } catch (e) {
+    console.log("error in getQuestionById", e);
+    throw e;
+  }
+}
+
 export async function getQuestions() {
   // eslint-disable-next-line no-useless-catch
   try {
@@ -95,6 +119,19 @@ export async function getQuestions() {
     throw e;
   }
 }
+export async function getTopQuestions() {
+  try {
+    connectToDatabase();
+    return await Question.find()
+      .populate("tags", { modal: Tag })
+      .populate("author", { modal: User })
+      .sort({ views: -1 })
+      .limit(5);
+  } catch (e) {
+    throw e;
+  }
+}
+
 export async function getUserQuestions(params) {
   const { userId, sortBy, page = 1, pageSize = 10 } = params;
 
@@ -114,7 +151,6 @@ export async function getUserQuestions(params) {
     throw e;
   }
 }
-
 
 export async function upvoteQuestion(params: QuestionVoteParams) {
   try {

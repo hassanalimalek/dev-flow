@@ -1,8 +1,16 @@
 import Image from "next/image";
 import React from "react";
 import RenderTag from "../renderTag";
+import Link from "next/link";
+import { getTopQuestions } from "@/lib/actions/question.action";
+import { getPopularTags } from "@/lib/actions/tag.action";
 
-function RightSidebar() {
+async function RightSidebar() {
+  const topQuestions = await getTopQuestions();
+  const topTags = await getPopularTags();
+  console.log("topTags -->", topTags);
+
+  console.log("topQuestions -->", topQuestions);
   return (
     <div
       className="
@@ -11,65 +19,36 @@ function RightSidebar() {
       <div className="mb-20">
         <h2 className="h3-bold text-dark300_light900 ">Top Questions</h2>
         <div className="mt-6 flex flex-col gap-[30px]">
-          <div className="flex gap-4">
-            <p className="body-medium text-dark500_light700">
-              Would it be appropriate to point out an error in another paper
-              during a referee report?
-            </p>
-            <Image
-              alt="chevron right"
-              width={20}
-              height={20}
-              src="assets/icons/chevron-right.svg"
-            />
-          </div>
-          <div className="flex gap-4">
-            <p className="body-medium text-dark500_light700">
-              Would it be appropriate to point out an error in another paper
-              during a referee report?
-            </p>
-            <Image
-              alt="chevron right"
-              width={20}
-              height={20}
-              src="assets/icons/chevron-right.svg"
-            />
-          </div>
-          <div className="flex gap-4">
-            <p className="body-medium text-dark500_light700">
-              Would it be appropriate to point out an error in another paper
-              during a referee report?
-            </p>
-            <Image
-              alt="chevron right"
-              width={20}
-              height={20}
-              src="assets/icons/chevron-right.svg"
-            />
-          </div>
-          <div className="flex gap-4">
-            <p className="body-medium text-dark500_light700">
-              Would it be appropriate to point out an error in another paper
-              during a referee report?
-            </p>
-            <Image
-              alt="chevron right"
-              width={20}
-              height={20}
-              src="assets/icons/chevron-right.svg"
-            />
-          </div>
+          {topQuestions.map((question) => (
+            <Link href={`/question/${question._id}`}>
+              <div key={question._id} className="flex gap-4">
+                <p className="body-medium text-dark500_light700">
+                  {question.title}
+                </p>
+                <Image
+                  alt="chevron right"
+                  width={20}
+                  height={20}
+                  src="assets/icons/chevron-right.svg"
+                  className="cursor-pointer "
+                />
+              </div>
+            </Link>
+          ))}
         </div>
       </div>
       <div>
         <h2 className="h3-bold text-dark300_light900 ">Popular Tags</h2>
+
         <div className="mt-6 flex flex-col gap-[30px]">
-          <RenderTag
-            _id="1"
-            name="NEXT JS"
-            showCount={true}
-            totalQuestions={1000}
-          />
+          {topTags.map((tag) => (
+            <RenderTag
+              _id={tag._id}
+              name={tag.name}
+              showCount={true}
+              totalQuestions={tag.numberofQuestions}
+            />
+          ))}
         </div>
       </div>
     </div>

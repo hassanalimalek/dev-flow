@@ -20,7 +20,7 @@ import { Badge } from "@/components/ui/badge";
 import { QuestionsSchema } from "@/lib/validations";
 import { useTheme } from "@/context/themeContext";
 import Image from "next/image";
-import { createQuestion } from "@/lib/actions/question.action";
+import { createQuestion, editQuestion } from "@/lib/actions/question.action";
 import { useRouter, usePathname } from "next/navigation";
 
 interface Props {
@@ -67,12 +67,12 @@ const Question = ({ type, mongoUserId, questionDetails }: Props) => {
         /**
          * Edit a question
          */
-        // await editQuestion({
-        //   questionId: parsedQuestionDetails?._id,
-        //   title: values.title,
-        //   content: values.explanation,
-        //   path: pathname,
-        // });
+        await editQuestion({
+          questionId: parsedQuestionDetails?._id,
+          title: values.title,
+          content: values.explanation,
+          path: pathname,
+        });
         // navigate to the question detail page
         router.push(`/question/${parsedQuestionDetails._id}`);
       } else {
