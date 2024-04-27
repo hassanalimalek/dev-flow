@@ -31,7 +31,7 @@ const QuestionSchema = new Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
-// Check if the model alredy exists, if not create it
+// Check if the model already exists, if not create it
 const Question = models?.Question || model("Question", QuestionSchema);
 
 export default Question;

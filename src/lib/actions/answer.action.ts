@@ -72,6 +72,46 @@ export async function getAnswers(params: GetAnswersParams) {
   }
 }
 
+export async function getUserAnswers(params) {
+  const { userId, sortBy, page = 1, pageSize = 10 } = params;
+  console.log("userId -->", userId);
+  // for Pagination => calculate the number of posts to skip based on the pageNumber and pageSize
+  const skipAmount = (page - 1) * pageSize;
+
+  try {
+    connectToDatabase();
+    return await Answer.find({ author: userId })
+      .sort({ views: -1, upVotes: -1 })
+      .populate("upVotes", { modal: User })
+      .populate("downVotes", { modal: User })
+      .populate("question", { modal: Question })
+      .populate("author", { modal: User })
+      .skip(skipAmount)
+      .limit(pageSize);
+  } catch (e) {
+    console.log("e -->", e);
+    throw e;
+  }
+}
+export async function deleteAnswer({
+  answerId,
+  path,
+}: {
+  answerId: string;
+  path: string;
+}) {
+  console.log(" delete answer @@@@@@id -->", answerId);
+  console.log(" path -->", path);
+  try {
+    connectToDatabase();
+    await Answer.deleteOne({ _id: answerId.toString() });
+    revalidatePath(path);
+    return;
+  } catch (e) {
+    throw e;
+  }
+}
+
 export async function upvoteAnswer(params: AnswerVoteParams) {
   try {
     connectToDatabase();

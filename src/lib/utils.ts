@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import moment from "moment";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -50,5 +51,9 @@ export const formatAndDivideNumber = (number: number): string => {
   } else {
     return `${number}`;
   }
+};
 
+export const getJoinedDate = (joinedAt: Date): string => {
+  const formattedDate = moment(joinedAt).format("MMMM YYYY");
+  return `Joined ${formattedDate}`;
 };

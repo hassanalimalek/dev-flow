@@ -1,11 +1,17 @@
 "use server";
 
 import Question from "@/database/question.modal";
+import Answer from "@/database/answer.modal";
 import { connectToDatabase } from "../mongoose";
 import Tag from "@/database/tag.modal";
 import User from "@/database/user.modal";
-import { CreateQuestionParams, QuestionVoteParams } from "./shared.types";
+import {
+  CreateQuestionParams,
+  DeleteQuestionParams,
+  QuestionVoteParams,
+} from "./shared.types";
 import { revalidatePath } from "next/cache";
+import Interaction from "@/database/interaction.modal";
 
 export async function createQuestion(params: CreateQuestionParams) {
   console.log("create question start @@@2");
@@ -58,6 +64,25 @@ export async function getQuestionById(id: string) {
   }
 }
 
+export async function deleteQuestion(params: DeleteQuestionParams) {
+  try {
+    connectToDatabase();
+    const { questionId, path } = params;
+    console.log("params -->", params);
+    await Question.deleteOne({ _id: questionId });
+    await Answer.deleteMany({ question: questionId });
+    await Interaction.deleteMany({ question: questionId });
+    await Tag.updateMany(
+      { questions: questionId },
+      { $pull: { questions: questionId } }
+    );
+    console.log("question deleted @@@");
+    revalidatePath(path);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export async function getQuestions() {
   // eslint-disable-next-line no-useless-catch
   try {
@@ -70,6 +95,26 @@ export async function getQuestions() {
     throw e;
   }
 }
+export async function getUserQuestions(params) {
+  const { userId, sortBy, page = 1, pageSize = 10 } = params;
+
+  // for Pagination => calculate the number of posts to skip based on the pageNumber and pageSize
+  const skipAmount = (page - 1) * pageSize;
+
+  try {
+    connectToDatabase();
+    return await Question.find({ author: userId })
+      .sort({ views: -1, upVotes: -1 })
+      .populate("tags", { modal: Tag })
+      .populate("author", { modal: User })
+      .skip(skipAmount)
+      .limit(pageSize);
+  } catch (e) {
+    console.log("e -->", e);
+    throw e;
+  }
+}
+
 
 export async function upvoteQuestion(params: QuestionVoteParams) {
   try {

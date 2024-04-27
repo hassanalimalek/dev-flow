@@ -3,7 +3,7 @@ import RenderTag from "@/components/shared/renderTag";
 import Metric from "@/components/shared/metric";
 import { formatAndDivideNumber, getTimestamp } from "@/lib/utils";
 import { SignedIn } from "@clerk/nextjs";
-// import EditDeleteAction from "../shared/EditDeleteAction";
+import EditDeleteAction from "@/components/shared/EditDeleteAction";
 
 interface QuestionProps {
   _id: string;
@@ -56,9 +56,9 @@ const QuestionCard = ({
 
         {/* Edit / Delete */}
         <SignedIn>
-          {/* {showActionButtons && (
-            <EditDeleteAction type="question" itemId={JSON.stringify(_id)} />
-          )} */}
+          {showActionButtons && (
+            <EditDeleteAction type="Question" itemId={JSON.stringify(_id)} />
+          )}
         </SignedIn>
       </div>
 
