@@ -4,6 +4,7 @@ import Filters from "@/components/shared/filter";
 import NoResult from "@/components/shared/noResult";
 import { LocalSearchBar } from "@/components/shared/search/localSearchBar";
 import { Button } from "@/components/ui/button";
+import Pagination from "@/components/shared/pagination";
 import { HomePageFilters } from "@/constants/filters";
 import { getQuestions } from "@/lib/actions/question.action";
 import Link from "next/link";
@@ -17,7 +18,8 @@ export default async function Home({
 }) {
   const filter = searchParams?.filter;
   const query = searchParams?.q;
-  const result = await getQuestions({ searchKey: query, filter });
+  const page = searchParams?.page;
+  const result = await getQuestions({ searchKey: query, filter, page });
 
   return (
     <>
@@ -52,8 +54,8 @@ px-4 py-3 !text-light-900"
       </div>
       <HomeFilters />
       <div className="mt-10 flex w-full flex-col gap-6">
-        {result.length > 0 ? (
-          result.map((question) => (
+        {result.questions.length > 0 ? (
+          result.questions.map((question) => (
             <QuestionCard
               key={question._id}
               _id={question._id}
@@ -74,6 +76,12 @@ px-4 py-3 !text-light-900"
             linkTitle="Ask a question"
           />
         )}
+      </div>
+      <div className="mt-10">
+        <Pagination
+          pageNumber={searchParams?.page ? +searchParams.page : 1}
+          isNext={result?.isNext}
+        />
       </div>
     </>
   );

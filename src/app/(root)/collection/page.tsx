@@ -8,6 +8,7 @@ import { QuestionFilters } from "@/constants/filters";
 import { getSavedQuestions } from "@/lib/actions/user.action";
 import React from "react";
 import { auth } from "@clerk/nextjs";
+import Pagination from "@/components/shared/pagination";
 
 export default async function Collection({
   searchParams,
@@ -18,6 +19,7 @@ export default async function Collection({
   const { userId } = auth();
   const query = searchParams?.q;
   const filter = searchParams?.filter;
+  const page = searchParams?.page;
 
   if (!userId) return null;
 
@@ -25,6 +27,7 @@ export default async function Collection({
     clerkId: userId,
     searchQuery: query,
     filter: filter as string,
+    page: page ? Number(page) : 1,
   });
 
   return (
@@ -70,6 +73,12 @@ export default async function Collection({
             linkTitle="Ask a question"
           />
         )}
+        <div className="mt-10">
+          <Pagination
+            pageNumber={searchParams?.page ? +searchParams.page : 1}
+            isNext={result?.isNext}
+          />
+        </div>
       </div>
     </>
   );

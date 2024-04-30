@@ -46,10 +46,13 @@ export const getUserInfo = async (params: GetUserByIdParams) => {
   }
 };
 
-export const getAllUsers = async (params: any = {}) => {
+export const getAllUsers = async (params: any = {}): any => {
   // eslint-disable-next-line no-useless-catch
 
   const { page = 1, pageSize = 10, filter, searchKey } = params;
+
+  // Calculate the number of posts to skip based on the page
+  const skipAmount = (page - 1) * pageSize;
   const query: FilterQuery<typeof User> = {};
   if (searchKey) {
     query.$or = [
@@ -78,8 +81,12 @@ export const getAllUsers = async (params: any = {}) => {
     connectToDatabase();
     const users = await User.find(query)
       .sort(sortOptions)
-      .limit(pageSize)
-      .skip((page - 1) * pageSize);
+      .skip(skipAmount)
+      .limit(pageSize);
+
+    const totalUsers = await User.countDocuments();
+    const isNext = totalUsers > skipAmount + users.length;
+    return { users, isNext };
     return users;
   } catch (error) {
     console.error(`❌ ${error} ❌`);
@@ -208,7 +215,7 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
   try {
     connectToDatabase();
 
-    const { clerkId, searchQuery, filter, page = 1, pageSize = 20 } = params;
+    const { clerkId, searchQuery, filter, page = 1, pageSize = 10 } = params;
 
     // for Pagination => caluclate the number of posts to skip based on the pageNumber and pageSize
     const skipAmount = (page - 1) * pageSize;
