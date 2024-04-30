@@ -66,10 +66,8 @@ interface UrlQueryParams {
 }
 
 export const formUrlQuery = ({ params, key, value }: UrlQueryParams) => {
-  console.log("params --->", params);
   const currentUrl = queryString.parse(params);
-  console.log("window.location.pathname --->", window.location.pathname);
-  console.log("currentUrl -->", currentUrl);
+
   currentUrl[key] = value;
 
   return queryString.stringifyUrl(

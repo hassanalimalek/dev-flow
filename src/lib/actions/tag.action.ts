@@ -53,14 +53,33 @@ export async function getAllTags(params: GetAllTagsParams) {
     connectToDatabase();
     const { page = 1, pageSize = 10, filter, searchQuery } = params;
     const query: FilterQuery<typeof Tag> = {};
-
+    let sortOptions = {};
     if (searchQuery) {
       query.$or = [
         { name: { $regex: new RegExp(searchQuery as string, "i") } },
       ];
     }
+
+    switch (filter) {
+      case "popular":
+        sortOptions = { questions: -1 };
+        break;
+      case "old":
+        sortOptions = { createdOn: 1 };
+        break;
+      case "recent":
+        sortOptions = { createdOn: -1 };
+        break;
+      case "name":
+        sortOptions = { name: 1 };
+        break;
+      default:
+        break;
+    }
+    console.log("sortOptions -->", sortOptions);
+    console.log("filter --->", filter);
     const tags = await Tag.find(query)
-      .sort({ createdAt: -1 })
+      .sort(sortOptions)
       .limit(pageSize)
       .skip((page - 1) * pageSize);
     return tags;

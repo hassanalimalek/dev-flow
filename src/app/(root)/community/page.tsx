@@ -12,7 +12,10 @@ export default async function Community({
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
   const query = searchParams?.q;
-  const result = await getAllUsers({ searchKey: query });
+  const filter = searchParams?.filter;
+  console.log("filter --->", filter);
+  const result = await getAllUsers({ searchKey: query, filter });
+  console.log("result @@@ -->", result);
   return (
     <div>
       <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
@@ -29,8 +32,8 @@ export default async function Community({
         <Filters
           filters={UserFilters}
           otherClasses="min-h-[56px] sm:min-w-[170px]"
-          containerClasses="hidden max-md:flex"
-        ></Filters>
+          // containerClasses="hidden max-md:flex"
+        />
       </div>
       <div className="mt-12 flex flex-wrap gap-4">
         {result.length > 0 ? (

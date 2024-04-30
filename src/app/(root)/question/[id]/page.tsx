@@ -13,13 +13,13 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-async function Page({ params }: any) {
+const Page = async ({ params, searchParams }: any) => {
   console.log("params -->", params);
 
   const { id } = params;
   const { userId } = auth();
   const result = await getQuestionById(id);
-  const { answers } = await getAnswers({ questionId: id });
+
   let mongoUser;
   if (userId) {
     mongoUser = await getUserById({ userId });
@@ -27,7 +27,7 @@ async function Page({ params }: any) {
 
   console.log("result 0000", result);
   console.log("result?._id -->", result?._id);
-  console.log("answers -->", answers);
+
   console.log("userId -->", userId);
   console.log("mongoUser -->", mongoUser);
   console.log("userId @@@", userId);
@@ -114,11 +114,13 @@ async function Page({ params }: any) {
         ))}
       </div>
       <AllAnswers
-        answers={answers}
-        totalAnswers={result?.answers.length}
-        userId={JSON.stringify(mongoUser?._id)}
-        questionId={JSON.stringify(result?._id)}
+        questionId={JSON.stringify(result._id)}
+        userId={JSON.stringify(mongoUser._id)}
+        totalAnswers={result.answers.length}
+        page={searchParams.page}
+        filter={searchParams?.filter}
       />
+
       <AnswerForm
         question={result?.content}
         questionId={JSON.stringify(result?._id)}
@@ -126,6 +128,6 @@ async function Page({ params }: any) {
       />
     </>
   );
-}
+};
 
 export default Page;

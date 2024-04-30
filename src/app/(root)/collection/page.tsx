@@ -17,11 +17,14 @@ export default async function Collection({
 }) {
   const { userId } = auth();
   const query = searchParams?.q;
+  const filter = searchParams?.filter;
+
   if (!userId) return null;
 
   const result = await getSavedQuestions({
     clerkId: userId,
     searchQuery: query,
+    filter: filter as string,
   });
 
   return (
