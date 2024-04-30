@@ -110,11 +110,13 @@ export async function getQuestionById(id: string) {
 }
 
 export async function getQuestions(params: any) {
-  const { searchKey, filter } = params;
   // eslint-disable-next-line no-useless-catch
   try {
     connectToDatabase();
-    let sortOptions = {};
+    const { searchKey, filter, page = 1, pageSize = 10 } = params;
+
+    // Calculate the number of posts to skip based on the page
+    const skipAmount = (page - 1) * pageSize;
     const query: FilterQuery<typeof Question> = {};
     if (searchKey) {
       query.$or = [
@@ -122,7 +124,7 @@ export async function getQuestions(params: any) {
         { content: { $regex: searchKey, $options: "i" } },
       ];
     }
-
+    let sortOptions = {};
     switch (filter) {
       case "newest":
         sortOptions = { createdAt: -1 };
@@ -136,11 +138,15 @@ export async function getQuestions(params: any) {
       default:
         break;
     }
-
-    return await Question.find(query)
+    const questions = await Question.find(query)
       .populate("tags", { modal: Tag })
       .populate("author", { modal: User })
+      .skip(skipAmount)
+      .limit(pageSize)
       .sort(sortOptions);
+    const totalQuestions = await Question.countDocuments(query);
+    const isNext = totalQuestions > skipAmount + questions.length;
+    return { questions, isNext };
   } catch (e) {
     throw e;
   }

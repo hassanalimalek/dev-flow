@@ -1,6 +1,7 @@
 import UserCard from "@/components/card/userCard";
 import Filters from "@/components/shared/filter";
 import NoResult from "@/components/shared/noResult";
+import Pagination from "@/components/shared/pagination";
 import { LocalSearchBar } from "@/components/shared/search/localSearchBar";
 import { TagFilters } from "@/constants/filters";
 import { getAllTags } from "@/lib/actions/tag.action";
@@ -16,9 +17,11 @@ export default async function Tags({
 }) {
   const query = searchParams?.q;
   const filter = searchParams?.filter;
+  const page = searchParams?.page;
   const result = await getAllTags({
     searchQuery: query,
     filter: filter as string,
+    page: page ? Number(page) : 1,
   });
   console.log("result get all tags users", result);
 
@@ -41,8 +44,8 @@ export default async function Tags({
         ></Filters>
       </div>
       <div className="mt-12 flex flex-wrap gap-4">
-        {result.length > 0 ? (
-          result.map((tag) => (
+        {result.tags.length > 0 ? (
+          result.tags?.map((tag) => (
             <Link
               key={tag._id}
               href={`/tags/${tag._id}`}
@@ -72,6 +75,12 @@ export default async function Tags({
             linkTitle="Ask a question"
           />
         )}
+      </div>
+      <div className="mt-10">
+        <Pagination
+          pageNumber={searchParams?.page ? +searchParams.page : 1}
+          isNext={result?.isNext}
+        />
       </div>
     </div>
   );

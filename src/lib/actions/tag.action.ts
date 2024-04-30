@@ -11,6 +11,7 @@ import Tag, { ITag } from "@/database/tag.modal";
 import { FilterQuery } from "mongoose";
 import Question from "@/database/question.modal";
 import { Filter } from "lucide-react";
+import { Console } from "console";
 
 export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
   // eslint-disable-next-line no-useless-catch
@@ -52,6 +53,10 @@ export async function getAllTags(params: GetAllTagsParams) {
   try {
     connectToDatabase();
     const { page = 1, pageSize = 10, filter, searchQuery } = params;
+
+    // Calculate the number of posts to skip based on the page
+    console.log("page -->", page);
+    const skipAmount = (Number(page) - 1) * Number(pageSize);
     const query: FilterQuery<typeof Tag> = {};
     let sortOptions = {};
     if (searchQuery) {
@@ -81,7 +86,15 @@ export async function getAllTags(params: GetAllTagsParams) {
     const tags = await Tag.find(query)
       .sort(sortOptions)
       .limit(pageSize)
-      .skip((page - 1) * pageSize);
+      .skip(skipAmount);
+
+    const totalTags = await Tag.countDocuments();
+    console.log("skipAmount --", skipAmount);
+    console.log("totalTags -->", totalTags);
+    const isNext = totalTags > skipAmount + tags.length;
+    console.log(" isNext -->", isNext);
+
+    return { tags, isNext };
     return tags;
   } catch (error) {
     console.error(`❌ ${error} ❌`);

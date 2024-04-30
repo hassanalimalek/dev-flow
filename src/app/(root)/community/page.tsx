@@ -1,5 +1,6 @@
 import UserCard from "@/components/card/userCard";
 import Filters from "@/components/shared/filter";
+import Pagination from "@/components/shared/pagination";
 import { LocalSearchBar } from "@/components/shared/search/localSearchBar";
 import { UserFilters } from "@/constants/filters";
 import { getAllUsers } from "@/lib/actions/user.action";
@@ -13,9 +14,14 @@ export default async function Community({
 }) {
   const query = searchParams?.q;
   const filter = searchParams?.filter;
-  console.log("filter --->", filter);
-  const result = await getAllUsers({ searchKey: query, filter });
-  console.log("result @@@ -->", result);
+  const page = searchParams?.page;
+
+  const { users, isNext } = await getAllUsers({
+    searchKey: query,
+    filter,
+    page,
+  });
+
   return (
     <div>
       <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
@@ -36,11 +42,17 @@ export default async function Community({
         />
       </div>
       <div className="mt-12 flex flex-wrap gap-4">
-        {result.length > 0 ? (
-          result.map((user) => <UserCard user={user} key={user._id} />)
+        {users.length > 0 ? (
+          users.map((user: any) => <UserCard user={user} key={user._id} />)
         ) : (
           <div>No users found</div>
         )}
+      </div>
+      <div className="mt-10">
+        <Pagination
+          pageNumber={searchParams?.page ? +searchParams.page : 1}
+          isNext={isNext}
+        />
       </div>
     </div>
   );
