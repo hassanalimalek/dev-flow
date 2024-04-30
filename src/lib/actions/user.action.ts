@@ -48,11 +48,19 @@ export const getUserInfo = async (params: GetUserByIdParams) => {
 
 export const getAllUsers = async (params: any = {}) => {
   // eslint-disable-next-line no-useless-catch
+
+  const { page = 1, pageSize = 10, filter, searchKey } = params;
+  const query: FilterQuery<typeof User> = {};
+  if (searchKey) {
+    query.$or = [
+      { name: { $regex: new RegExp(searchKey, "i") } },
+      { username: { $regex: new RegExp(searchKey, "i") } },
+      { email: { $regex: new RegExp(searchKey, "i") } },
+    ];
+  }
   try {
     connectToDatabase();
-    console.log("params -->", params);
-    const { page = 1, pageSize = 10, filter, searchQuery } = params;
-    const users = await User.find()
+    const users = await User.find(query)
       .sort({ createdAt: -1 })
       .limit(pageSize)
       .skip((page - 1) * pageSize);
@@ -190,7 +198,7 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
     const skipAmount = (page - 1) * pageSize;
 
     const query: FilterQuery<typeof Question> = searchQuery
-      ? { title: { $regex: new RegExp(searchQuery, "i") } }
+      ? { title: { $regex: new RegExp(searchQuery as string, "i") } }
       : {};
 
     /**

@@ -13,6 +13,8 @@ import {
 } from "./shared.types";
 import { revalidatePath } from "next/cache";
 import Interaction from "@/database/interaction.modal";
+import { FilterQuery } from "mongoose";
+import { ParamsProps } from "@/types";
 
 export async function createQuestion(params: CreateQuestionParams) {
   console.log("create question start @@@2");
@@ -107,11 +109,20 @@ export async function getQuestionById(id: string) {
   }
 }
 
-export async function getQuestions() {
+export async function getQuestions(params: any) {
+  const { searchKey } = params;
   // eslint-disable-next-line no-useless-catch
   try {
     connectToDatabase();
-    return await Question.find()
+
+    const query: FilterQuery<typeof Question> = {};
+    if (searchKey) {
+      query.$or = [
+        { title: { $regex: searchKey, $options: "i" } },
+        { content: { $regex: searchKey, $options: "i" } },
+      ];
+    }
+    return await Question.find(query)
       .populate("tags", { modal: Tag })
       .populate("author", { modal: User })
       .sort({ createdAt: -1 });
@@ -132,7 +143,7 @@ export async function getTopQuestions() {
   }
 }
 
-export async function getUserQuestions(params) {
+export async function getUserQuestions(params: GetAllQuestionsParams) {
   const { userId, sortBy, page = 1, pageSize = 10 } = params;
 
   // for Pagination => calculate the number of posts to skip based on the pageNumber and pageSize

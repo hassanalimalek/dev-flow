@@ -1,15 +1,21 @@
 import UserCard from "@/components/card/userCard";
 import Filters from "@/components/shared/filter";
 import NoResult from "@/components/shared/noResult";
-import LocalSearchbar from "@/components/shared/search/localSearch";
+import { LocalSearchBar } from "@/components/shared/search/localSearchBar";
 import { TagFilters } from "@/constants/filters";
 import { getAllTags } from "@/lib/actions/tag.action";
 import Link from "next/link";
 
 import React from "react";
 
-async function Page() {
-  const result = await getAllTags({});
+export default async function Tags({
+  searchParams,
+}: {
+  params: { slug: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
+}) {
+  const query = searchParams?.q;
+  const result = await getAllTags({ searchQuery: query });
   console.log("result get all tags users", result);
 
   return (
@@ -18,8 +24,8 @@ async function Page() {
         <h1 className="h1-bold text-dark100_light900">Tags</h1>
       </div>
       <div className="mt-11 flex justify-between gap-5 max-sm:flex-col sm:items-center">
-        <LocalSearchbar
-          route="/"
+        <LocalSearchBar
+          route="/tags"
           iconPosition="left"
           imgSrc="/assets/icons/search.svg"
           placeholder="Search by a tag name"
@@ -68,4 +74,3 @@ async function Page() {
   );
 }
 
-export default Page;

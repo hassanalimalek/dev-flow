@@ -3,28 +3,35 @@ import QuestionCard from "@/components/card";
 import HomeFilters from "@/components/home/homeFilters";
 import Filters from "@/components/shared/filter";
 import NoResult from "@/components/shared/noResult";
-import LocalSearch from "@/components/shared/search/localSearch";
+import { LocalSearchBar } from "@/components/shared/search/localSearchBar";
 import { QuestionFilters } from "@/constants/filters";
 import { getSavedQuestions } from "@/lib/actions/user.action";
 import React from "react";
 import { auth } from "@clerk/nextjs";
 
-export default async function Home() {
+export default async function Collection({
+  searchParams,
+}: {
+  params: { slug: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
+}) {
   const { userId } = auth();
+  const query = searchParams?.q;
   if (!userId) return null;
 
   const result = await getSavedQuestions({
     clerkId: userId,
+    searchQuery: query,
   });
-  console.log("result --->", result?.questions);
+
   return (
     <>
       <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
         <h1 className="h1-bold text-dark100_light900">Saved Questions</h1>
       </div>
       <div className="mt-11 flex justify-between gap-5 max-sm:flex-col sm:items-center">
-        <LocalSearch
-          route="/"
+        <LocalSearchBar
+          route="/collection"
           iconPosition="left"
           imgSrc="/assets/icons/search.svg"
           placeholder="Search for questions"
@@ -39,7 +46,7 @@ export default async function Home() {
       <HomeFilters />
       <div className="mt-10 flex w-full flex-col gap-6">
         {result.questions.length > 0 ? (
-          result.questions.map((question) => (
+          result.questions.map((question: any) => (
             <QuestionCard
               key={question._id}
               _id={question._id}

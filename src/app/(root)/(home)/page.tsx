@@ -1,18 +1,23 @@
-// "use client";
 import QuestionCard from "@/components/card";
 import HomeFilters from "@/components/home/homeFilters";
 import Filters from "@/components/shared/filter";
 import NoResult from "@/components/shared/noResult";
-import LocalSearch from "@/components/shared/search/localSearch";
+import { LocalSearchBar } from "@/components/shared/search/localSearchBar";
 import { Button } from "@/components/ui/button";
 import { HomePageFilters } from "@/constants/filters";
 import { getQuestions } from "@/lib/actions/question.action";
 import Link from "next/link";
 import React from "react";
 
-export default async function Home() {
-  const result = await getQuestions();
-  console.log("result --->", result);
+export default async function Home({
+  searchParams,
+}: {
+  params: { slug: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
+}) {
+  const query = searchParams?.q;
+  const result = await getQuestions({ searchKey: query });
+
   return (
     <>
       <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
@@ -31,7 +36,7 @@ px-4 py-3 !text-light-900"
         </Link>
       </div>
       <div className="mt-11 flex justify-between gap-5 max-sm:flex-col sm:items-center">
-        <LocalSearch
+        <LocalSearchBar
           route="/"
           iconPosition="left"
           imgSrc="/assets/icons/search.svg"
