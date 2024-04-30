@@ -10,6 +10,7 @@ import {
 import Tag, { ITag } from "@/database/tag.modal";
 import { FilterQuery } from "mongoose";
 import Question from "@/database/question.modal";
+import { Filter } from "lucide-react";
 
 export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
   // eslint-disable-next-line no-useless-catch
@@ -51,7 +52,14 @@ export async function getAllTags(params: GetAllTagsParams) {
   try {
     connectToDatabase();
     const { page = 1, pageSize = 10, filter, searchQuery } = params;
-    const tags = await Tag.find()
+    const query: FilterQuery<typeof Tag> = {};
+
+    if (searchQuery) {
+      query.$or = [
+        { name: { $regex: new RegExp(searchQuery as string, "i") } },
+      ];
+    }
+    const tags = await Tag.find(query)
       .sort({ createdAt: -1 })
       .limit(pageSize)
       .skip((page - 1) * pageSize);

@@ -114,7 +114,7 @@ export interface GetSavedQuestionsParams {
   page?: number;
   pageSize?: number;
   filter?: string;
-  searchQuery?: string;
+  searchQuery?: string | string[] | undefined;
 }
 
 export interface GetTopInteractedTagsParams {
@@ -126,7 +126,7 @@ export interface GetAllTagsParams {
   page?: number;
   pageSize?: number;
   filter?: string;
-  searchQuery?: string;
+  searchQuery?: string | string[] | undefined;
 }
 
 export interface GetQuestionsByTagIdParams {
