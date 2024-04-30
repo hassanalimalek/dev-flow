@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
   Select,
   SelectContent,
@@ -8,6 +8,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { formUrlQuery } from "@/lib/utils";
 
 interface Props {
   filters: {
@@ -19,9 +21,41 @@ interface Props {
 }
 
 const Filters = ({ filters, otherClasses, containerClasses }: Props) => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const filter = searchParams.get("filter");
+
+  const [active, setActive] = useState(filter);
+
+  const handleTypeClick = (item: string) => {
+    console.log("handleType Click @@@", item);
+    if (active === item) {
+      setActive("");
+      const newUrl = formUrlQuery({
+        params: searchParams.toString(),
+        key: "filter",
+        value: null, // reset
+      });
+      router.push(newUrl, { scroll: false });
+    } else {
+      setActive(item);
+      const newUrl = formUrlQuery({
+        params: searchParams.toString(),
+        key: "filter",
+        value: item.toLowerCase(),
+      });
+      router.push(newUrl, { scroll: false });
+    }
+  };
+
   return (
     <div className={`relative ${containerClasses}`}>
-      <Select>
+      <Select
+        onValueChange={(value) => {
+          handleTypeClick(value);
+        }}
+      >
         <SelectTrigger
           className={`${otherClasses} body-regular light-border 
         background-light800_dark300 

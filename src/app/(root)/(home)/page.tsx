@@ -15,8 +15,9 @@ export default async function Home({
   params: { slug: string };
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
+  const filter = searchParams?.filter;
   const query = searchParams?.q;
-  const result = await getQuestions({ searchKey: query });
+  const result = await getQuestions({ searchKey: query, filter });
 
   return (
     <>

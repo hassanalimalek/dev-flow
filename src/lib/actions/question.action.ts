@@ -110,11 +110,11 @@ export async function getQuestionById(id: string) {
 }
 
 export async function getQuestions(params: any) {
-  const { searchKey } = params;
+  const { searchKey, filter } = params;
   // eslint-disable-next-line no-useless-catch
   try {
     connectToDatabase();
-
+    let sortOptions = {};
     const query: FilterQuery<typeof Question> = {};
     if (searchKey) {
       query.$or = [
@@ -122,10 +122,25 @@ export async function getQuestions(params: any) {
         { content: { $regex: searchKey, $options: "i" } },
       ];
     }
+
+    switch (filter) {
+      case "newest":
+        sortOptions = { createdAt: -1 };
+        break;
+      case "frequent":
+        sortOptions = { views: -1 };
+        break;
+      case "unanswered":
+        query.answers = { $size: 0 };
+        break;
+      default:
+        break;
+    }
+
     return await Question.find(query)
       .populate("tags", { modal: Tag })
       .populate("author", { modal: User })
-      .sort({ createdAt: -1 });
+      .sort(sortOptions);
   } catch (e) {
     throw e;
   }

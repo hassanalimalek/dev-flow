@@ -58,10 +58,26 @@ export const getAllUsers = async (params: any = {}) => {
       { email: { $regex: new RegExp(searchKey, "i") } },
     ];
   }
+
+  let sortOptions = {};
+  switch (filter) {
+    case "old_users":
+      sortOptions = { joinedAt: 1 };
+      break;
+    case "new_users":
+      sortOptions = { joinedAt: -1 };
+      break;
+    case "top_contributors":
+      sortOptions = { $reputation: -1 };
+      break;
+    default:
+      break;
+  }
+
   try {
     connectToDatabase();
     const users = await User.find(query)
-      .sort({ createdAt: -1 })
+      .sort(sortOptions)
       .limit(pageSize)
       .skip((page - 1) * pageSize);
     return users;
@@ -200,12 +216,21 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
     const query: FilterQuery<typeof Question> = searchQuery
       ? { title: { $regex: new RegExp(searchQuery as string, "i") } }
       : {};
-
+    console.log(" Tfilter -->", filter);
     /**
      * Filter
      */
     let sortOption = {};
     switch (filter) {
+      case "newest":
+        sortOption = { createdAt: -1 };
+        break;
+      case "frequent":
+        sortOption = { views: -1 };
+        break;
+      case "unanswered":
+        query.answers = { $size: 0 };
+        break;
       case "most_recent":
         sortOption = { createdAt: -1 };
         break;
@@ -227,7 +252,7 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
       default:
         break;
     }
-
+    console.log(" @@@ sortOption", sortOption);
     const user = await User.findOne({ clerkId }).populate({
       path: "saved",
       match: query,

@@ -46,31 +46,49 @@ export async function createAnswer(params: CreateAnswerParams) {
 export async function getAnswers(params: GetAnswersParams) {
   try {
     connectToDatabase();
+
     const { questionId, sortBy, page = 1, pageSize = 10 } = params;
 
-    // for Pagination => caluclate the number of posts to skip based on the pageNumber and pageSize
     const skipAmount = (page - 1) * pageSize;
 
-    const answers = await Answer.find({ question: questionId })
-      .populate("author", "_id clerkId name picture")
-      .skip(skipAmount)
-      .limit(pageSize)
-      .sort({ createdAt: -1 });
+    let sortOptions = {};
 
-    /**
-     * Pagination
-     */
+    switch (sortBy) {
+      case "recent":
+        sortOptions = { createdAt: -1 };
+        break;
+      case "old":
+        sortOptions = { createdAt: 1 };
+        break;
+      case "highestupvotes":
+        sortOptions = { upVotes: -1 };
+        break;
+      case "lowestupvotes":
+        sortOptions = { upVotes: 1 };
+        break;
+      default:
+        break;
+    }
+    console.log("sortOptions -->", sortOptions);
+
+    const answers = await Answer.find({ question: questionId })
+      .populate("author", "_id clerkId name picture ")
+      .sort(sortOptions)
+      .skip(skipAmount)
+      .limit(pageSize);
+
     const totalAnswers = await Answer.countDocuments({
       question: questionId,
     });
+
     const isNext = totalAnswers > skipAmount + answers.length;
 
     return { answers, isNext };
   } catch (error) {
-    console.error(`❌ ${error} ❌`);
-    throw error;
+    console.log(error);
   }
 }
+
 
 export async function getUserAnswers(params) {
   const { userId, sortBy, page = 1, pageSize = 10 } = params;

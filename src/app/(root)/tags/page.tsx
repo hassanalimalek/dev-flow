@@ -15,7 +15,11 @@ export default async function Tags({
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
   const query = searchParams?.q;
-  const result = await getAllTags({ searchQuery: query });
+  const filter = searchParams?.filter;
+  const result = await getAllTags({
+    searchQuery: query,
+    filter: filter as string,
+  });
   console.log("result get all tags users", result);
 
   return (
@@ -34,7 +38,6 @@ export default async function Tags({
         <Filters
           filters={TagFilters}
           otherClasses="min-h-[56px] sm:min-w-[170px]"
-          containerClasses="hidden max-md:flex"
         ></Filters>
       </div>
       <div className="mt-12 flex flex-wrap gap-4">
