@@ -1,13 +1,14 @@
 import { AnswerFilters } from "@/constants/filters";
-import Filter from "../filter";
+
 import { getAnswers } from "@/lib/actions/answer.action";
 import Link from "next/link";
 import Image from "next/image";
 import { getTimestamp } from "@/lib/utils";
+import Filter from "../filter";
 import ParseHTML from "../parseHtml";
 import Votes from "../votes";
 import Pagination from "../pagination";
-// import Pagination from './Pagination';
+
 
 interface Props {
   questionId: string;
