@@ -30,10 +30,12 @@ interface Props {
 function AnswerForm({ mongoUserId, question, questionId }: Props) {
   const editorRef = useRef(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmittingAI, setIsSubmittingAI] = useState(false);
+
   const pathname = usePathname();
 
-  // For editor dark and light mode
-  const { mode } = useTheme();
+  // For editor dark and light theme
+  const { theme } = useTheme();
 
   const form = useForm<z.infer<typeof AnswerSchema>>({
     resolver: zodResolver(AnswerSchema),
@@ -69,6 +71,40 @@ function AnswerForm({ mongoUserId, question, questionId }: Props) {
     }
     setIsSubmitting(false);
   }
+  const generateAIAnswer = async () => {
+    if (!mongoUserId) {
+      return;
+    }
+    console.log(
+      "${process.env.NEXT_PUBLIC_SERVER_URL}/api/chatgpt -->",
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/chatgpt`
+    );
+    setIsSubmittingAI(true);
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/chatgpt`, // ->folder->route/path.
+        {
+          method: "POST",
+          body: JSON.stringify({ question }),
+        }
+      );
+
+      const aiAnswer = await response.json();
+
+      // convert plain text to HTML format
+
+      const formattedAnswer = aiAnswer.reply.replace(/\n/g, "<br/>");
+
+      if (editorRef.current) {
+        const editor = editorRef.current as any;
+        editor.setContent(formattedAnswer);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsSubmittingAI(false);
+    }
+  };
 
   return (
     <div className="mt-6">
@@ -78,17 +114,24 @@ function AnswerForm({ mongoUserId, question, questionId }: Props) {
         </h4>
 
         <Button
-          className="btn light-border-2 gap-1.5 rounded-md px-4 py-2.5 text-primary-500 shadow-none"
-          //   onClick={generateAIAnswer}
+          className="btn light-border-2 gap-1.5 rounded-md px-4 py-2.5 text-primary-500 shadow-none dark:text-primary-500"
+          onClick={generateAIAnswer}
+          disabled={isSubmittingAI}
         >
-          <Image
-            src="/assets/icons/stars.svg"
-            alt="star"
-            width={12}
-            height={12}
-            className="object-contain"
-          />
-          Generate AI Answer
+          {isSubmittingAI ? (
+            <>Generating...</>
+          ) : (
+            <>
+              <Image
+                src="/assets/icons/stars.svg"
+                alt="star"
+                width={12}
+                height={12}
+                className="object-contain"
+              />
+              Generate AI Answer
+            </>
+          )}
         </Button>
       </div>
       <Form {...form}>
@@ -139,8 +182,8 @@ function AnswerForm({ mongoUserId, question, questionId }: Props) {
                         "alignright alignjustify | bullist numlist",
                       content_style:
                         "body { font-family:Inter,sans-serif; font-size:16px }",
-                      skin: mode === "dark" ? "oxide-dark" : "oxide",
-                      content_css: mode === "dark" && "dark",
+                      skin: theme === "dark" ? "oxide-dark" : "oxide",
+                      content_css: theme === "dark" && "dark",
                     }}
                   />
                 </FormControl>
