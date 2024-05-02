@@ -2,6 +2,7 @@ import Navbar from "@/components/shared/navbar/navbar";
 import LeftSidebar from "@/components/shared/sidebar/leftSidebar";
 import RightSidebar from "@/components/shared/sidebar/rightSidebar";
 import React from "react";
+import { Toaster } from "@/components/ui/toaster";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -19,6 +20,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         >
           <div className="mx-auto w-full max-w-5xl">{children}</div>
         </section>
+        <Toaster className="bg-white" />
 
         <RightSidebar />
       </div>
