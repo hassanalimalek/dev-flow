@@ -12,7 +12,7 @@ import { formatAndDivideNumber } from "@/lib/utils";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
-// import { toast } from "../ui/use-toast";
+import { toast } from "../../ui/use-toast";
 
 interface Props {
   type: string;
@@ -42,10 +42,10 @@ const Votes = ({
 
   const handleSave = async () => {
     if (!userId) {
-      // return toast({
-      //   title: "Please log in",
-      //   description: "You must be logged in to perform this action",
-      // });
+      return toast({
+        title: "Please log in",
+        description: "You must be logged in to perform this action",
+      });
     }
 
     await toggleSaveQuestion({
@@ -54,20 +54,20 @@ const Votes = ({
       path: pathname,
     });
 
-    // return toast({
-    //   title: `Question ${
-    //     !hasSaved ? "saved in" : "removed from"
-    //   } your collection`,
-    //   variant: !hasSaved ? "default" : "destructive",
-    // });
+    return toast({
+      title: `Question ${
+        !hasSaved ? "saved in" : "removed from"
+      } your collection`,
+      variant: !hasSaved ? "default" : "destructive",
+    });
   };
 
   const handleVote = async (action: string) => {
     if (!userId) {
-      // return toast({
-      //   title: "Please log in",
-      //   description: "You must be logged in to perform this action",
-      // });
+      return toast({
+        title: "Please log in",
+        description: "You must be logged in to perform this action",
+      });
     }
 
     if (action === "upVote") {
@@ -96,10 +96,10 @@ const Votes = ({
         });
       }
 
-      // return toast({
-      //   title: `Upvote ${!hasUpvoted ? "Successful" : "Removed"}`,
-      //   variant: !hasUpvoted ? "default" : "destructive",
-      // });
+      return toast({
+        title: `Upvote ${!hasUpvoted ? "Successful" : "Removed"}`,
+        variant: !hasUpvoted ? "default" : "destructive",
+      });
     }
 
     if (action === "downVote") {
@@ -121,10 +121,10 @@ const Votes = ({
         });
       }
 
-      // return toast({
-      //   title: `Downvote ${!hasDownvoted ? "Successful" : "Removed"}`,
-      //   variant: !hasDownvoted ? "default" : "destructive",
-      // });
+      return toast({
+        title: `Downvote ${!hasDownvoted ? "Successful" : "Removed"}`,
+        variant: !hasDownvoted ? "default" : "destructive",
+      });
     }
   };
 
