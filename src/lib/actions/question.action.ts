@@ -45,6 +45,17 @@ export async function createQuestion(params: CreateQuestionParams) {
     console.log("tagDocuments --->", tagDocuments);
     await Question.findByIdAndUpdate(question._id, { tags: tagDocuments });
 
+    // Create an interaction record for user's ask-question action and then increment author's reputation by +5 for creating a question
+
+    await Interaction.create({
+      user: author,
+      action: "ask_question",
+      question: question._id,
+      tags: tagDocuments,
+    });
+
+    await User.findByIdAndUpdate(author, { $inc: { reputation: 5 } });
+
     revalidatePath(path);
   } catch (e) {
     throw e;
