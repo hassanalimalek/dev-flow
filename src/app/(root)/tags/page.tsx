@@ -21,7 +21,7 @@ export default async function Tags({
   const query = searchParams?.q;
   const filter = searchParams?.filter;
   const page = searchParams?.page;
-  const result = await getAllTags({
+  const result: any = await getAllTags({
     searchQuery: query,
     filter: filter as string,
     page: page ? Number(page) : 1,
@@ -48,7 +48,7 @@ export default async function Tags({
       </div>
       <div className="mt-12 flex flex-wrap gap-4">
         {result.tags.length > 0 ? (
-          result.tags?.map((tag) => (
+          result.tags?.map((tag: any) => (
             <Link
               key={tag._id}
               href={`/tags/${tag._id}`}

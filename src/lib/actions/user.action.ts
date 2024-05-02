@@ -118,7 +118,7 @@ export const getUserInfo = async (params: GetUserByIdParams) => {
   }
 };
 
-export const getAllUsers = async (params: any = {}): any => {
+export const getAllUsers = async (params: any = {}) => {
   // eslint-disable-next-line no-useless-catch
 
   const { page = 1, pageSize = 10, filter, searchKey } = params;

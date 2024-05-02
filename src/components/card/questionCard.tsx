@@ -3,7 +3,7 @@ import RenderTag from "@/components/shared/renderTag";
 import Metric from "@/components/shared/metric";
 import { formatAndDivideNumber, getTimestamp } from "@/lib/utils";
 import { SignedIn } from "@clerk/nextjs";
-import EditDeleteAction from "@/components/shared/EditDeleteAction";
+import EditDeleteAction from "../shared/editDeleteAction";
 
 interface QuestionProps {
   _id: string;

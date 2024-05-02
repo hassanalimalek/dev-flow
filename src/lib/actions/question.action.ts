@@ -10,21 +10,20 @@ import {
   DeleteQuestionParams,
   EditQuestionParams,
   QuestionVoteParams,
+  RecommendedParams,
 } from "./shared.types";
 import { revalidatePath } from "next/cache";
 import Interaction from "@/database/interaction.modal";
 import { FilterQuery } from "mongoose";
-import { ParamsProps } from "@/types";
 
 export async function createQuestion(params: CreateQuestionParams) {
-  console.log("create question start @@@2");
   // eslint-disable-next-line no-useless-catch
   try {
     connectToDatabase();
-    console.log("params received @@@ ", params);
+
     const { title, content, tags, author, path } = params;
     // Create the question
-    console.log("tags --->", tags);
+
     const question = await Question.create({
       title,
       content,
@@ -32,7 +31,7 @@ export async function createQuestion(params: CreateQuestionParams) {
     });
 
     const tagDocuments = [];
-    console.log("tags -->", tags);
+
     // Create the tags or get them if they already exist
     for (const tag of tags) {
       const existingTag = await Tag.findOneAndUpdate(
@@ -89,7 +88,7 @@ export async function deleteQuestion(params: DeleteQuestionParams) {
   try {
     connectToDatabase();
     const { questionId, path } = params;
-    console.log("params -->", params);
+
     await Question.deleteOne({ _id: questionId });
     await Answer.deleteMany({ question: questionId });
     await Interaction.deleteMany({ question: questionId });
@@ -97,7 +96,7 @@ export async function deleteQuestion(params: DeleteQuestionParams) {
       { questions: questionId },
       { $pull: { questions: questionId } }
     );
-    console.log("question deleted @@@");
+
     revalidatePath(path);
   } catch (error) {
     console.log(error);
@@ -175,7 +174,7 @@ export async function getTopQuestions() {
   }
 }
 
-export async function getUserQuestions(params: GetAllQuestionsParams) {
+export async function getUserQuestions(params: any) {
   const { userId, sortBy, page = 1, pageSize = 10 } = params;
 
   // for Pagination => calculate the number of posts to skip based on the pageNumber and pageSize

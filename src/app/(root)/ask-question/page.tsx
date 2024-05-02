@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 async function Page() {
   const { userId } = auth();
-  const mongoUser = await getUserById({ userId });
+  const mongoUser = await getUserById({ userId: userId! as string });
 
   return (
     <div>

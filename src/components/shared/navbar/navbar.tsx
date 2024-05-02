@@ -4,11 +4,6 @@ import ThemeSwitcher from "../themeSwitcher";
 import GlobalSearch from "../search/globalSearch";
 import MobileNav from "./mobileNav";
 import { SignedIn, UserButton } from "@clerk/nextjs";
-// import ThemeSwitcher from "../../ThemeSwitcher";
-
-// import { SignedIn, UserButton } from "@clerk/nextjs";
-// import MobileNav from "./mobilenav";
-// import GlobalSearch from "../search/globalSearch";
 
 const Navbar = () => {
   return (
@@ -20,11 +15,12 @@ const Navbar = () => {
     >
       <Link href="/" className="flex items-center gap-1 ">
         <Image
-          src="/assets/images/site-logo.svg"
+          src="/public/assets/images/default-logo.svg"
           width={23}
           alt="DevFlow"
           height={23}
         />
+
         <p className="h2-bold font-spaceGrotesk text-dark-100 dark:text-light-900 max-sm:hidden">
           Dev <span className="text-primary-500"> Overflow</span>
         </p>
@@ -45,7 +41,6 @@ const Navbar = () => {
             }}
           />
         </SignedIn>
-        <MobileNav />
         <MobileNav />
       </div>
     </nav>

@@ -8,9 +8,7 @@ import { getPopularTags } from "@/lib/actions/tag.action";
 async function RightSidebar() {
   const topQuestions = await getTopQuestions();
   const topTags = await getPopularTags();
-  console.log("topTags -->", topTags);
 
-  console.log("topQuestions -->", topQuestions);
   return (
     <div
       className="
@@ -20,7 +18,7 @@ async function RightSidebar() {
         <h2 className="h3-bold text-dark300_light900 ">Top Questions</h2>
         <div className="mt-6 flex flex-col gap-[30px]">
           {topQuestions.map((question) => (
-            <Link href={`/question/${question._id}`}>
+            <Link key={question._id} href={`/question/${question._id}`}>
               <div key={question._id} className="flex gap-4">
                 <p className="body-medium text-dark500_light700">
                   {question.title}
@@ -43,6 +41,7 @@ async function RightSidebar() {
         <div className="mt-6 flex flex-col gap-[30px]">
           {topTags.map((tag) => (
             <RenderTag
+              key={tag._id}
               _id={tag._id}
               name={tag.name}
               showCount={true}

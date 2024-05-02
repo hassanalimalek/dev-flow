@@ -21,7 +21,7 @@ export default async function Community({
   const filter = searchParams?.filter;
   const page = searchParams?.page;
 
-  const { users, isNext } = await getAllUsers({
+  const { users, isNext }: any = await getAllUsers({
     searchKey: query,
     filter,
     page,
