@@ -10,7 +10,7 @@ import AnswerTab from "@/components/tab/answerTab";
 async function Page({ params, searchParams }: any) {
   const { id } = params;
   const userData = await getUserInfo({ userId: id });
-  console.log("userData -->", userData);
+  console.log("userData rec -->", userData);
 
   return (
     <div
@@ -25,24 +25,24 @@ async function Page({ params, searchParams }: any) {
         <div className="grid grid-cols-1 gap-5 xs:grid-cols-2 md:grid-cols-4">
           <StatCard
             data={[
-              { title: "Questions", value: "123" },
-              { title: "Answers", value: "123" },
+              { title: "Questions", value: userData.totalQuestions },
+              { title: "Answers", value: userData.totalAnswers },
             ]}
           />
           <StatBadgeCard
             image="/assets/icons/gold-medal.svg"
             title="Gold"
-            value="123"
+            value={userData?.badgeCounts?.GOLD}
           />
           <StatBadgeCard
             image="/assets/icons/silver-medal.svg"
             title="Silver"
-            value="123"
+            value={userData?.badgeCounts?.SILVER}
           />
           <StatBadgeCard
             image="/assets/icons/bronze-medal.svg"
             title="Bronze"
-            value="123"
+            value={userData?.badgeCounts?.BRONZE}
           />
         </div>
       </div>
