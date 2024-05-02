@@ -11,6 +11,7 @@ import {
 
 import { revalidatePath } from "next/cache";
 import User from "@/database/user.modal";
+import Interaction from "@/database/interaction.modal";
 
 export async function createAnswer(params: CreateAnswerParams) {
   try {
@@ -25,7 +26,7 @@ export async function createAnswer(params: CreateAnswerParams) {
       $push: { answers: newAnswer._id },
     });
 
-    // // Increment user reputation
+    // Increment user reputation
     await Interaction.create({
       user: author,
       action: "answer",
@@ -35,7 +36,6 @@ export async function createAnswer(params: CreateAnswerParams) {
     });
 
     // Increment author's reputation
-
     await User.findByIdAndUpdate(author, { $inc: { reputation: 10 } });
 
     revalidatePath(path);
@@ -44,7 +44,6 @@ export async function createAnswer(params: CreateAnswerParams) {
     throw error;
   }
 }
-
 export async function getAnswers(params: GetAnswersParams) {
   try {
     connectToDatabase();
@@ -90,8 +89,6 @@ export async function getAnswers(params: GetAnswersParams) {
     console.log(error);
   }
 }
-
-
 export async function getUserAnswers(params) {
   const { userId, sortBy, page = 1, pageSize = 10 } = params;
   console.log("userId -->", userId);
@@ -131,7 +128,6 @@ export async function deleteAnswer({
     throw e;
   }
 }
-
 export async function upvoteAnswer(params: AnswerVoteParams) {
   try {
     connectToDatabase();

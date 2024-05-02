@@ -14,7 +14,7 @@ async function Page({ params, searchParams }: any) {
 
   return (
     <div
-      className="flex flex-col flex-1   justify-between
+      className="flex flex-col flex-1 justify-between
     "
     >
       <div className="m">

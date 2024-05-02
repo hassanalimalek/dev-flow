@@ -9,6 +9,7 @@ import { HomePageFilters } from "@/constants/filters";
 import { getQuestions } from "@/lib/actions/question.action";
 import Link from "next/link";
 import React from "react";
+import Loading from "./loading";
 
 export default async function Home({
   searchParams,
