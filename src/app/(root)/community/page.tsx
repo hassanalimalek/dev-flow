@@ -5,6 +5,11 @@ import { LocalSearchBar } from "@/components/shared/search/localSearchBar";
 import { UserFilters } from "@/constants/filters";
 import { getAllUsers } from "@/lib/actions/user.action";
 import React from "react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Community | DevOverFlow",
+};
 
 export default async function Community({
   searchParams,

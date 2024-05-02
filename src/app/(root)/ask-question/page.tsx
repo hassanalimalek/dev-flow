@@ -2,6 +2,11 @@ import Question from "@/components/forms/questions";
 import { getUserById } from "@/lib/actions/user.action";
 import { auth } from "@clerk/nextjs";
 import React from "react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Ask a Question | DevOverFlow",
+};
 
 async function Page() {
   const { userId } = auth();

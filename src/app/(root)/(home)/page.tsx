@@ -6,10 +6,18 @@ import { LocalSearchBar } from "@/components/shared/search/localSearchBar";
 import { Button } from "@/components/ui/button";
 import Pagination from "@/components/shared/pagination";
 import { HomePageFilters } from "@/constants/filters";
-import { getQuestions } from "@/lib/actions/question.action";
+import {
+  getQuestions,
+  getRecommendedQuestions,
+} from "@/lib/actions/question.action";
 import Link from "next/link";
 import React from "react";
-import Loading from "./loading";
+import { auth } from "@clerk/nextjs";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Home | DevOverFlow",
+};
 
 export default async function Home({
   searchParams,
@@ -17,10 +25,31 @@ export default async function Home({
   params: { slug: string };
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
+  const { userId } = auth();
   const filter = searchParams?.filter;
   const query = searchParams?.q;
   const page = searchParams?.page;
-  const result = await getQuestions({ searchKey: query, filter, page });
+  let result;
+  if (searchParams?.filter === "recommended") {
+    if (userId) {
+      result = await getRecommendedQuestions({
+        userId,
+        searchQuery: query as string,
+        page: page ? +page : 1,
+      });
+    } else {
+      result = {
+        questions: [],
+        isNext: false,
+      };
+    }
+  } else {
+    result = await getQuestions({
+      searchQuery: query,
+      filter,
+      page: page ? +page : 1,
+    });
+  }
 
   return (
     <>
