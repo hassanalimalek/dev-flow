@@ -6,7 +6,11 @@ import { getUserInfo } from "@/lib/actions/user.action";
 import React from "react";
 import QuestionTab from "@/components/tab/questionTab";
 import AnswerTab from "@/components/tab/answerTab";
+import type { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "Your Profile | DevOverFlow",
+};
 async function Page({ params, searchParams }: any) {
   const { id } = params;
   const userData = await getUserInfo({ userId: id });

@@ -69,7 +69,7 @@ const QuestionCard = ({
         })}
       </div>
 
-      <div className="flex-between mt-6 w-full flex-wrap gap-3">
+      <div className="flex items-center gap-3 max-sm:flex-wrap max-sm:justify-start">
         {/* Author */}
         <Metric
           imgUrl={author.picture}

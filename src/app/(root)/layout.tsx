@@ -20,7 +20,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         >
           <div className="mx-auto w-full max-w-5xl">{children}</div>
         </section>
-        <Toaster className="bg-white" />
+        <Toaster />
 
         <RightSidebar />
       </div>

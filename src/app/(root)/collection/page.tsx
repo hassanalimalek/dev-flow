@@ -9,6 +9,11 @@ import { getSavedQuestions } from "@/lib/actions/user.action";
 import React from "react";
 import { auth } from "@clerk/nextjs";
 import Pagination from "@/components/shared/pagination";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Saved Questions | DevOverFlow",
+};
 
 export default async function Collection({
   searchParams,

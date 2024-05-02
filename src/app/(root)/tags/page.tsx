@@ -6,9 +6,12 @@ import { LocalSearchBar } from "@/components/shared/search/localSearchBar";
 import { TagFilters } from "@/constants/filters";
 import { getAllTags } from "@/lib/actions/tag.action";
 import Link from "next/link";
-
 import React from "react";
+import type { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "Tags | DevOverFlow",
+};
 export default async function Tags({
   searchParams,
 }: {
