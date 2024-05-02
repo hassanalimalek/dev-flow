@@ -26,15 +26,17 @@ export async function createAnswer(params: CreateAnswerParams) {
     });
 
     // // Increment user reputation
-    // await Interaction.create({
-    //   user: author,
-    //   action: 'answer',
-    //   question,
-    //   answer: newAnswer.id,
-    //   tags: questionObject.tags
-    // });
+    await Interaction.create({
+      user: author,
+      action: "answer",
+      question,
+      answer: newAnswer.id,
+      tags: questionObject.tags,
+    });
 
-    // await User.findByIdAndUpdate(author, { $inc: { reputation: 10 } });
+    // Increment author's reputation
+
+    await User.findByIdAndUpdate(author, { $inc: { reputation: 10 } });
 
     revalidatePath(path);
   } catch (error) {
