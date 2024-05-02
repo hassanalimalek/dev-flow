@@ -3,7 +3,7 @@ import Link from "next/link";
 import Metric from "../shared/metric";
 import { formatAndDivideNumber, getTimestamp } from "@/lib/utils";
 import { SignedIn } from "@clerk/nextjs";
-import EditDeleteAction from "../shared/EditDeleteAction";
+import EditDeleteAction from "../shared/editDeleteAction";
 
 interface Props {
   clerkId?: string | null;

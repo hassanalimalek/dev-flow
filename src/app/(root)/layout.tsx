@@ -10,7 +10,7 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
-    <div>
+    <main className="background-light850_dark100 relative">
       <Navbar />
       <div className="flex">
         <LeftSidebar />
@@ -24,7 +24,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
         <RightSidebar />
       </div>
-    </div>
+    </main>
   );
 };
 

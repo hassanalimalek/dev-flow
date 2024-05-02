@@ -85,7 +85,7 @@ export const formUrlQuery = ({ params, key, value }: UrlQueryParams) => {
 
 export const removeKeyFromQuery = ({ params, keysToRemove }: any): string => {
   const currentUrl = queryString.parse(params);
-  keysToRemove.forEach((key) => {
+  keysToRemove.forEach((key: any) => {
     delete currentUrl[key];
   });
 

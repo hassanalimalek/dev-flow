@@ -1,5 +1,4 @@
 import { AnswerFilters } from "@/constants/filters";
-
 import { getAnswers } from "@/lib/actions/answer.action";
 import Link from "next/link";
 import Image from "next/image";
@@ -8,7 +7,6 @@ import Filter from "../filter";
 import ParseHTML from "../parseHtml";
 import Votes from "../votes";
 import Pagination from "../pagination";
-
 
 interface Props {
   questionId: string;
@@ -89,7 +87,10 @@ const AllAnswers = async ({
 
       {/* Pagination */}
       <div className="mt-10 w-full">
-        <Pagination pageNumber={page ? +page : 1} isNext={result.isNext} />
+        <Pagination
+          pageNumber={page ? +page : 1}
+          isNext={result?.isNext || false}
+        />
       </div>
     </div>
   );

@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 async function Page({ params, searchParams }: any) {
   const { id } = params;
   const userData = await getUserInfo({ userId: id });
-  console.log("userData rec -->", userData);
+
 
   return (
     <div
@@ -65,11 +65,15 @@ async function Page({ params, searchParams }: any) {
             <QuestionTab
               clerkId={id}
               userId={userData.user._id}
-              // searchParams={}
+              searchParams={searchParams}
             />
           </TabsContent>
           <TabsContent value="answers">
-            <AnswerTab clerkId={id} userId={userData.user._id} />
+            <AnswerTab
+              clerkId={id}
+              userId={userData.user._id}
+              searchParams={searchParams}
+            />
           </TabsContent>
         </Tabs>
       </div>

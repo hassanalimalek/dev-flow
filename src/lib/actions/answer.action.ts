@@ -89,7 +89,7 @@ export async function getAnswers(params: GetAnswersParams) {
     console.log(error);
   }
 }
-export async function getUserAnswers(params) {
+export async function getUserAnswers(params: any) {
   const { userId, sortBy, page = 1, pageSize = 10 } = params;
   console.log("userId -->", userId);
   // for Pagination => calculate the number of posts to skip based on the pageNumber and pageSize

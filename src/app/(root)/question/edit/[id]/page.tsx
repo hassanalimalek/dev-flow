@@ -4,14 +4,12 @@ import { getUserById } from "@/lib/actions/user.action";
 import { auth } from "@clerk/nextjs";
 import React from "react";
 
-async function Page({ params }) {
+async function Page({ params }: any) {
   const { userId } = auth();
   const { id } = params;
-  console.log("params -->", params);
-  console.log("id -->", id);
-  const mongoUser = await getUserById({ userId });
+
+  const mongoUser = await getUserById({ userId: userId! as string });
   const questionDetail = await getQuestionById(id);
-  console.log("questionDetail -->", questionDetail);
 
   return (
     <div>

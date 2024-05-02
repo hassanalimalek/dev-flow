@@ -4,7 +4,6 @@ import Metric from "@/components/shared/metric";
 import ParseHTML from "@/components/shared/parseHtml";
 import RenderTag from "@/components/shared/renderTag";
 import Votes from "@/components/shared/votes";
-import { getAnswers } from "@/lib/actions/answer.action";
 import { getQuestionById } from "@/lib/actions/question.action";
 import { getUserById } from "@/lib/actions/user.action";
 import { formatAndDivideNumber, getTimestamp } from "@/lib/utils";
@@ -14,8 +13,6 @@ import Link from "next/link";
 import React from "react";
 
 const Page = async ({ params, searchParams }: any) => {
-  console.log("params -->", params);
-
   const { id } = params;
   const { userId } = auth();
   const result = await getQuestionById(id);
@@ -24,14 +21,6 @@ const Page = async ({ params, searchParams }: any) => {
   if (userId) {
     mongoUser = await getUserById({ userId });
   }
-
-  console.log("result 0000", result);
-  console.log("result?._id -->", result?._id);
-
-  console.log("userId -->", userId);
-  console.log("mongoUser -->", mongoUser);
-  console.log("userId @@@", userId);
-  console.log("id -->", id);
 
   return (
     <>
