@@ -46,14 +46,8 @@ function AnswerForm({ mongoUserId, question, questionId }: Props) {
   });
 
   async function onSubmit(values: z.infer<typeof AnswerSchema>) {
-    console.log("values", values);
     setIsSubmitting(true);
-    console.log("Tesob --->", {
-      content: values.answer,
-      author: JSON.parse(mongoUserId),
-      path: pathname,
-      question: JSON.parse(questionId),
-    });
+
     try {
       await createAnswer({
         content: values.answer,
@@ -77,10 +71,6 @@ function AnswerForm({ mongoUserId, question, questionId }: Props) {
       return;
     }
 
-    console.log(
-      "${process.env.NEXT_PUBLIC_SERVER_URL}/api/chatgpt -->",
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/chatgpt`
-    );
     setIsSubmittingAI(true);
     try {
       const response = await fetch(

@@ -10,9 +10,9 @@ import { SignedOut } from "@clerk/nextjs";
 import { useUser } from "@clerk/clerk-react";
 
 function LeftSidebar() {
-  //   const { userId } = auth();
+
   const { user } = useUser();
-  console.log("user @@-->", user);
+
   const userId = user?.id;
   const pathname = usePathname();
 

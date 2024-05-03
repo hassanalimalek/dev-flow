@@ -58,7 +58,7 @@ const Question = ({ type, mongoUserId, questionDetails }: Props) => {
 
   // Submit form handler
   async function onSubmit(values: z.infer<typeof QuestionsSchema>) {
-    console.log("values", values);
+
     setIsSubmitting(true);
 
     try {
@@ -79,8 +79,6 @@ const Question = ({ type, mongoUserId, questionDetails }: Props) => {
          * Create a new Question
          */
 
-        console.log("create questions called @@@@");
-        console.log("mongoUserId -->", mongoUserId);
         await createQuestion({
           title: values.title,
           content: values.explanation,

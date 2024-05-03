@@ -1,10 +1,9 @@
 import { NextResponse } from "next/server";
 
 export const POST = async (request: Request) => {
-  console.log("POST REQUEST CALLED @@@@");
+
   const { question } = await request.json();
-  console.log(" process.env.OPENAI_API_URL -->", process.env.OPENAI_API_URL);
-  console.log(" process.env.OPENAI_API_KEY -->", process.env.OPENAI_API_KEY);
+
   try {
     const response = await fetch(process.env.OPENAI_API_URL as string, {
       method: "POST",
@@ -29,8 +28,7 @@ export const POST = async (request: Request) => {
     });
 
     const responseData = await response.json();
-    console.log("responseData -->", responseData);
-    console.log("responseData.error?.message -->", responseData.error?.message);
+
     if (responseData.error) {
       return NextResponse.json({ error: responseData.error?.message });
     }
@@ -39,7 +37,6 @@ export const POST = async (request: Request) => {
 
     return NextResponse.json({ reply });
   } catch (error: any) {
-    console.log("error =-=", error);
     return NextResponse.json({ error: error.message });
   }
 };
