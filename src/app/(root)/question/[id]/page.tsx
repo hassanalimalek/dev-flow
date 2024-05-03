@@ -16,12 +16,12 @@ const Page = async ({ params, searchParams }: any) => {
   const { id } = params;
   const { userId } = auth();
   const result = await getQuestionById(id);
-  console.log("userId -->", userId);
+
   let mongoUser;
   if (userId) {
     mongoUser = await getUserById({ userId });
   }
-  console.log(" mongoUser -->", mongoUser);
+
 
   return (
     <>

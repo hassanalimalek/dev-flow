@@ -10,7 +10,7 @@ interface Props {
 }
 
 const Pagination = ({ pageNumber, isNext }: Props) => {
-  console.log("pageNumber -->", pageNumber);
+
   const router = useRouter();
   const searchParams = useSearchParams();
 

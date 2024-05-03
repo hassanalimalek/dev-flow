@@ -23,7 +23,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
 
   // Function to toggle the theme
   const toggleTheme = () => {
-    console.log("toggle theme called @@@@");
+
     localStorage.setItem("theme", theme === "light" ? "dark" : "light");
     setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
     if (

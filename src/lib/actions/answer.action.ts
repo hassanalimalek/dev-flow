@@ -70,7 +70,6 @@ export async function getAnswers(params: GetAnswersParams) {
       default:
         break;
     }
-    console.log("sortOptions -->", sortOptions);
 
     const answers = await Answer.find({ question: questionId })
       .populate("author", "_id clerkId name picture ")
@@ -91,7 +90,7 @@ export async function getAnswers(params: GetAnswersParams) {
 }
 export async function getUserAnswers(params: any) {
   const { userId, sortBy, page = 1, pageSize = 10 } = params;
-  console.log("userId -->", userId);
+
   // for Pagination => calculate the number of posts to skip based on the pageNumber and pageSize
   const skipAmount = (page - 1) * pageSize;
 
@@ -106,7 +105,7 @@ export async function getUserAnswers(params: any) {
       .skip(skipAmount)
       .limit(pageSize);
   } catch (e) {
-    console.log("e -->", e);
+    x;
     throw e;
   }
 }
@@ -117,8 +116,6 @@ export async function deleteAnswer({
   answerId: string;
   path: string;
 }) {
-  console.log(" delete answer @@@@@@id -->", answerId);
-  console.log(" path -->", path);
   try {
     connectToDatabase();
     await Answer.deleteOne({ _id: answerId.toString() });
@@ -133,9 +130,9 @@ export async function upvoteAnswer(params: AnswerVoteParams) {
     connectToDatabase();
 
     const { answerId, userId, hasUpvoted, hasDownvoted, path } = params;
-    console.log("answerId --->", answerId);
+
     let updateQuery = {};
-    console.log("hasUpvoted -->", hasUpvoted);
+
     if (hasUpvoted) {
       updateQuery = { $pull: { upVotes: userId } };
     } else if (hasDownvoted) {

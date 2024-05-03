@@ -5,6 +5,7 @@ import { connectToDatabase } from "../mongoose";
 import { revalidatePath } from "next/cache";
 import Question from "@/database/question.modal";
 import {
+  DeleteUserParams,
   GetAllUsersParams,
   GetSavedQuestionsParams,
   GetUserByIdParams,
@@ -23,9 +24,9 @@ export const getUserById = async (params: GetUserByIdParams) => {
     connectToDatabase();
 
     const { userId } = params;
-    console.log("userId received -->", userId);
+
     const user = await User.findOne({ clerkId: userId });
-    console.log("user ---->>>>", user);
+
     return user;
   } catch (error) {
     console.error(`❌ ${error} ❌`);
@@ -217,34 +218,30 @@ export async function updateUser(params: UpdateUserParams) {
   }
 }
 
-export const deleteUser = async (params: any) => {
-  // eslint-disable-next-line no-useless-catch
+export async function deleteUser(params: DeleteUserParams) {
   try {
     connectToDatabase();
 
     const { clerkId } = params;
-    console.log("delete user called @@@ ");
+    const user = await User.findOne({ clerkId });
 
-    const user: any = User.findOneAndDelete({ clerkId });
-    if (!user) throw new Error("User not found");
+    if (!user) {
+      throw new Error("User not found");
+    }
 
-    // Delete user from database, and questions and comments etc
+    // delete the user's questions
 
-    // const userQuestionIds = await Question.find({ author: user._id }).distinct(
-    //   "_id"
-    // );
+    await Question.deleteMany({ author: user._id });
 
-    // Delete user questions
-    await Question.deleteMany({ author: user?._id });
+    // Todo: delete user answers,comments,etc
 
-    // TODO: Delete user answers,comments, etc
+    const deletedUser = await User.findByIdAndDelete(user._id);
 
-    return user;
+    return deletedUser;
   } catch (error) {
-    console.error(`❌ ${error} ❌`);
-    throw error;
+    console.log(error);
   }
-};
+}
 
 export async function toggleSaveQuestion(params: ToggleSaveQuestionParams) {
   try {
@@ -295,7 +292,7 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
     const query: FilterQuery<typeof Question> = searchQuery
       ? { title: { $regex: new RegExp(searchQuery as string, "i") } }
       : {};
-    console.log(" Tfilter -->", filter);
+
     /**
      * Filter
      */
@@ -331,7 +328,7 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
       default:
         break;
     }
-    console.log(" @@@ sortOption", sortOption);
+
     const user = await User.findOne({ clerkId }).populate({
       path: "saved",
       match: query,

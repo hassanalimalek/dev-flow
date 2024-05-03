@@ -35,8 +35,7 @@ const Votes = ({
   hasDownvoted,
   hasSaved,
 }: Props) => {
-  console.log("itemId -->", itemId);
-  console.log(" --userId ", userId);
+
   const pathname = usePathname();
   const router = useRouter();
 
@@ -80,13 +79,6 @@ const Votes = ({
           path: pathname,
         });
       } else if (type === "Answer") {
-        console.log("test voting-->", {
-          answerId: JSON.parse(itemId),
-          userId: JSON.parse(userId),
-          hasUpvoted,
-          hasDownvoted,
-          path: pathname,
-        });
         await upvoteAnswer({
           answerId: JSON.parse(itemId),
           userId: JSON.parse(userId),

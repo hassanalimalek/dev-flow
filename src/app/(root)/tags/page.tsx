@@ -26,7 +26,7 @@ export default async function Tags({
     filter: filter as string,
     page: page ? Number(page) : 1,
   });
-  console.log("result get all tags users", result);
+
 
   return (
     <div>

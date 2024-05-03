@@ -7,10 +7,8 @@ import { createUser, updateUser, deleteUser } from "@/lib/actions/user.action";
 
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
-  console.log("POST REQUEST @@@");
-  const WEBHOOK_SECRET = process.env.CLERK_WEB_HOOK_SECRET;
 
-  console.log("WEBHOOK_SECRET", WEBHOOK_SECRET);
+  const WEBHOOK_SECRET = process.env.CLERK_WEB_HOOK_SECRET;
 
   if (!WEBHOOK_SECRET) {
     throw new Error(
@@ -58,13 +56,11 @@ export async function POST(req: Request) {
   const { id } = evt.data;
   const eventType = evt.type;
 
-  console.log(`Webhook with and ID of ${id} and type of ${eventType}`);
-  console.log("Webhook body:", body);
-  console.log("eventType", eventType);
+
   if (eventType === "user.created") {
     const { id, email_addresses, first_name, last_name, image_url } = evt.data;
     // Create a mongo user
-    console.log("calling create user @@@");
+
     const mongoUser = await createUser({
       clerkId: id,
       name: `${first_name} ${last_name}`,

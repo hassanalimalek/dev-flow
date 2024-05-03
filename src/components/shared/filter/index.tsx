@@ -29,7 +29,7 @@ const Filters = ({ filters, otherClasses, containerClasses }: Props) => {
   const [active, setActive] = useState(filter);
 
   const handleTypeClick = (item: string) => {
-    console.log("handleType Click @@@", item);
+
     if (active === item) {
       setActive("");
       const newUrl = formUrlQuery({

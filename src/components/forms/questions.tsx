@@ -37,7 +37,6 @@ const Question = ({ type, mongoUserId, questionDetails }: Props) => {
   // Router
   const router = useRouter();
   const pathname = usePathname();
-  console.log("pathname --->", pathname);
 
   // For editor dark and light theme
   const { theme } = useTheme();
@@ -59,7 +58,6 @@ const Question = ({ type, mongoUserId, questionDetails }: Props) => {
 
   // Submit form handler
   async function onSubmit(values: z.infer<typeof QuestionsSchema>) {
-    console.log("values", values);
     setIsSubmitting(true);
 
     try {
@@ -79,9 +77,6 @@ const Question = ({ type, mongoUserId, questionDetails }: Props) => {
         /**
          * Create a new Question
          */
-
-        console.log("create questions called @@@@");
-        console.log("mongoUserId -->", mongoUserId);
         await createQuestion({
           title: values.title,
           content: values.explanation,
