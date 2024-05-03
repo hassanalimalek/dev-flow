@@ -33,7 +33,7 @@ const QuestionCard = ({
             className="subtle-regular text-dark400_light700
           line-clamp-1 flex sm:hidden"
           >
-            {/* {getTimestamp(createdAt)} */}
+            {getTimestamp(createdAt)}
           </span>
           <Link href={`/question/${_id}`}>
             <h3
@@ -72,7 +72,7 @@ const QuestionCard = ({
           imgUrl="/assets/icons/message.svg"
           alt="message"
           value={formatAndDivideNumber(answers.length)}
-          title=" Answers"
+          title={answers.length > 1 ? "Answers" : "Answer"}
           textStyles="small-medium text-dark400_light800"
         />
         <Metric
