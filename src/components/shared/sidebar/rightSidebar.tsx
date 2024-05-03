@@ -27,7 +27,7 @@ async function RightSidebar() {
                   alt="chevron right"
                   width={20}
                   height={20}
-                  src="assets/icons/chevron-right.svg"
+                  src="/assets/icons/chevron-right.svg"
                   className="cursor-pointer "
                 />
               </div>
