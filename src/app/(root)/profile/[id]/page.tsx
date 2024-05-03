@@ -64,14 +64,14 @@ async function Page({ params, searchParams }: any) {
           <TabsContent value="questions">
             <QuestionTab
               clerkId={id}
-              userId={userData.user._id}
+              userId={userData.user?._id}
               searchParams={searchParams}
             />
           </TabsContent>
           <TabsContent value="answers">
             <AnswerTab
               clerkId={id}
-              userId={userData.user._id}
+              userId={userData.user?._id}
               searchParams={searchParams}
             />
           </TabsContent>

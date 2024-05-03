@@ -41,11 +41,11 @@ export const getUserInfo = async (params: GetUserByIdParams) => {
 
     const totalQuestions = await Question.countDocuments({ author: user?._id });
     const totalAnswers = await Answer.countDocuments({
-      author: user._id,
+      author: user?._id,
     });
 
     const [questionUpvotes] = await Question.aggregate([
-      { $match: { author: user._id } },
+      { $match: { author: user?._id } },
       {
         $project: {
           _id: 0,
@@ -61,7 +61,7 @@ export const getUserInfo = async (params: GetUserByIdParams) => {
     ]);
 
     const [answerUpvotes] = await Answer.aggregate([
-      { $match: { author: user._id } },
+      { $match: { author: user?._id } },
       {
         $project: {
           _id: 0,
@@ -77,7 +77,7 @@ export const getUserInfo = async (params: GetUserByIdParams) => {
     ]);
 
     const [questionViews] = await Question.aggregate([
-      { $match: { author: user._id } },
+      { $match: { author: user?._id } },
       {
         $group: {
           _id: null,

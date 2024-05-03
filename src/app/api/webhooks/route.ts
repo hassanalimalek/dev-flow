@@ -7,7 +7,7 @@ import { createUser, updateUser, deleteUser } from "@/lib/actions/user.action";
 
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
-
+  console.log("POST REQUEST @@@");
   const WEBHOOK_SECRET = process.env.CLERK_WEB_HOOK_SECRET;
 
   console.log("WEBHOOK_SECRET", WEBHOOK_SECRET);
