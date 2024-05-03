@@ -18,6 +18,7 @@ import { Button } from "../ui/button";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { createAnswer } from "@/lib/actions/answer.action";
+import { toast } from "../ui/use-toast";
 // import { createAnswer } from "@/lib/actions/answer.action";
 // import { usePathname } from "next/navigation";
 // import { toast } from "../ui/use-toast";
@@ -75,6 +76,7 @@ function AnswerForm({ mongoUserId, question, questionId }: Props) {
     if (!mongoUserId) {
       return;
     }
+
     console.log(
       "${process.env.NEXT_PUBLIC_SERVER_URL}/api/chatgpt -->",
       `${process.env.NEXT_PUBLIC_SERVER_URL}/api/chatgpt`
@@ -91,6 +93,10 @@ function AnswerForm({ mongoUserId, question, questionId }: Props) {
 
       const aiAnswer = await response.json();
 
+      if (aiAnswer.error) {
+        throw new Error(aiAnswer.error);
+      }
+
       // convert plain text to HTML format
 
       const formattedAnswer = aiAnswer.reply.replace(/\n/g, "<br/>");
@@ -99,8 +105,10 @@ function AnswerForm({ mongoUserId, question, questionId }: Props) {
         const editor = editorRef.current as any;
         editor.setContent(formattedAnswer);
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      return toast({
+        title: error.message || "Error generating AI answer",
+      });
     } finally {
       setIsSubmittingAI(false);
     }

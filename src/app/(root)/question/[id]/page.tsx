@@ -16,11 +16,12 @@ const Page = async ({ params, searchParams }: any) => {
   const { id } = params;
   const { userId } = auth();
   const result = await getQuestionById(id);
-
+  console.log("userId -->", userId);
   let mongoUser;
   if (userId) {
     mongoUser = await getUserById({ userId });
   }
+  console.log(" mongoUser -->", mongoUser);
 
   return (
     <>
@@ -67,7 +68,7 @@ const Page = async ({ params, searchParams }: any) => {
           imgUrl="/assets/icons/clock.svg"
           alt="clock icon"
           value={` asked ${getTimestamp(result?.createdAt)}`}
-          title="Asked"
+          title=""
           textStyles="small-medium text-dark400_light800"
         />
 
@@ -103,8 +104,8 @@ const Page = async ({ params, searchParams }: any) => {
         ))}
       </div>
       <AllAnswers
-        questionId={JSON.stringify(result._id)}
-        userId={JSON.stringify(mongoUser._id)}
+        questionId={JSON.stringify(result?._id)}
+        userId={JSON.stringify(mongoUser?._id)}
         totalAnswers={result.answers.length}
         page={searchParams.page}
         filter={searchParams?.filter}

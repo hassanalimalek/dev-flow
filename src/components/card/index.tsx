@@ -2,7 +2,7 @@ import Link from "next/link";
 import React from "react";
 import RenderTag from "../shared/renderTag";
 import Metric from "../shared/metric";
-// import { formatAndDivideNumber, getTimestamp } from "@/lib/utils";
+import { formatAndDivideNumber, getTimestamp } from "@/lib/utils";
 
 interface Props {
   _id: string;
@@ -51,7 +51,7 @@ const QuestionCard = ({
         ))}
       </div>
 
-      {/* <div className="flex-between mt-6 w-full flex-wrap gap-3">
+      <div className="flex-between mt-6 w-full flex-wrap gap-3">
         <Metric
           imgUrl="/assets/icons/avatar.svg"
           alt="User"
@@ -82,7 +82,7 @@ const QuestionCard = ({
           title=" Views"
           textStyles="small-medium text-dark400_light800"
         />
-      </div> */}
+      </div>
     </div>
   );
 };

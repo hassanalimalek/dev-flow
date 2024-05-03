@@ -26,6 +26,7 @@ export default async function Home({
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
   const { userId } = auth();
+  console.log("userId -->", userId);
   const filter = searchParams?.filter;
   const query = searchParams?.q;
   const page = searchParams?.page;

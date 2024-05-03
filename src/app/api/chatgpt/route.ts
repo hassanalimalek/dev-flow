@@ -30,6 +30,7 @@ export const POST = async (request: Request) => {
 
     const responseData = await response.json();
     console.log("responseData -->", responseData);
+    console.log("responseData.error?.message -->", responseData.error?.message);
     if (responseData.error) {
       return NextResponse.json({ error: responseData.error?.message });
     }
