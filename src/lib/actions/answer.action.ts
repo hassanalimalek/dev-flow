@@ -12,7 +12,7 @@ import {
 import { revalidatePath } from "next/cache";
 import User from "@/database/user.modal";
 import Interaction from "@/database/interaction.modal";
-import { Toast } from "@/components/ui/toast";
+import { toast } from "@/components/ui/use-toast";
 
 export async function createAnswer(params: CreateAnswerParams) {
   try {
@@ -41,7 +41,7 @@ export async function createAnswer(params: CreateAnswerParams) {
 
     revalidatePath(path);
   } catch (e: any) {
-    Toast({
+    toast({
       title: e?.message || "Error generating result",
     });
   }
@@ -88,7 +88,7 @@ export async function getAnswers(params: GetAnswersParams) {
     return { answers, isNext };
   } catch (e: any) {
     console.log(e);
-    Toast({
+    toast({
       title: e?.message || "Error generating result",
     });
   }
@@ -110,7 +110,7 @@ export async function getUserAnswers(params: any) {
       .skip(skipAmount)
       .limit(pageSize);
   } catch (e: any) {
-    Toast({
+    toast({
       title: e?.message || "Error generating result",
     });
   }
@@ -128,7 +128,7 @@ export async function deleteAnswer({
     revalidatePath(path);
     return;
   } catch (e: any) {
-    Toast({
+    toast({
       title: e?.message || "Error generating result",
     });
   }
@@ -174,7 +174,7 @@ export async function upvoteAnswer(params: AnswerVoteParams) {
 
     revalidatePath(path);
   } catch (e: any) {
-    Toast({
+    toast({
       title: e?.message || "Error generating result",
     });
   }
@@ -218,7 +218,7 @@ export async function downvoteAnswer(params: AnswerVoteParams) {
 
     revalidatePath(path);
   } catch (e: any) {
-    Toast({
+    toast({
       title: e?.message || "Error generating result",
     });
   }

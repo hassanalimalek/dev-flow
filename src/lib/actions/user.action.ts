@@ -16,7 +16,7 @@ import Tag from "@/database/tag.modal";
 import Answer from "@/database/answer.modal";
 import { BadgeCriteriaType } from "@/types";
 import { assignBadges } from "../utils";
-import { Toast } from "@/components/ui/toast";
+import { toast } from "@/components/ui/use-toast";
 
 export const getUserById = async (params: GetUserByIdParams) => {
   // eslint-disable-next-line no-useless-catch
@@ -29,7 +29,7 @@ export const getUserById = async (params: GetUserByIdParams) => {
 
     return user;
   } catch (e: any) {
-    Toast({
+    toast({
       title: e?.message || "Error generating result",
     });
   }
@@ -115,7 +115,7 @@ export const getUserInfo = async (params: GetUserByIdParams) => {
 
     return { user, totalQuestions, totalAnswers, badgeCounts };
   } catch (e: any) {
-    Toast({
+    toast({
       title: e?.message || "Error generating result",
     });
   }
@@ -163,7 +163,7 @@ export const getAllUsers = async (params: any = {}) => {
     const isNext = totalUsers > skipAmount + users.length;
     return { users, isNext };
   } catch (e: any) {
-    Toast({
+    toast({
       title: e?.message || "Error generating result",
     });
   }
@@ -177,7 +177,7 @@ export const getUserTopTags = async () => {
     const users = await User.find();
     return users;
   } catch (e: any) {
-    Toast({
+    toast({
       title: e?.message || "Error generating result",
     });
   }
@@ -200,7 +200,7 @@ export const createUser = async (params: any) => {
 
     return user;
   } catch (e: any) {
-    Toast({
+    toast({
       title: e?.message || "Error generating result",
     });
   }
@@ -218,7 +218,7 @@ export async function updateUser(params: UpdateUserParams) {
 
     revalidatePath(path);
   } catch (e: any) {
-    Toast({
+    toast({
       title: e?.message || "Error generating result",
     });
   }
@@ -245,7 +245,7 @@ export async function deleteUser(params: DeleteUserParams) {
 
     return deletedUser;
   } catch (e: any) {
-    Toast({
+    toast({
       title: e?.message || "Error generating result",
     });
   }
@@ -283,7 +283,7 @@ export async function toggleSaveQuestion(params: ToggleSaveQuestionParams) {
 
     revalidatePath(path);
   } catch (e: any) {
-    Toast({
+    toast({
       title: e?.message || "Error generating result",
     });
   }
@@ -365,7 +365,7 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
 
     return { questions: savedQuestions, isNext };
   } catch (e: any) {
-    Toast({
+    toast({
       title: e?.message || "Error generating result",
     });
   }

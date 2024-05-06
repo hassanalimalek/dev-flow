@@ -6,7 +6,7 @@ import Tag from "@/database/tag.modal";
 import User from "@/database/user.modal";
 import { connectToDatabase } from "../mongoose";
 import { SearchParams } from "./shared.types";
-import { Toast } from "@/components/ui/toast";
+import { toast } from "@/components/ui/use-toast";
 
 const SearchableTypes = ["question", "answer", "user", "tag"];
 
@@ -100,7 +100,7 @@ export async function globalSearch(params: SearchParams) {
 
     return JSON.stringify(results);
   } catch (e: any) {
-    Toast({
+    toast({
       title: e?.message || "Error generating result",
     });
   }
