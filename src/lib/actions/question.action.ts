@@ -15,7 +15,7 @@ import {
 import { revalidatePath } from "next/cache";
 import Interaction from "@/database/interaction.modal";
 import { FilterQuery } from "mongoose";
-import { Toast } from "@/components/ui/toast";
+import { toast } from "@/components/ui/use-toast";
 
 export async function createQuestion(params: CreateQuestionParams) {
   // eslint-disable-next-line no-useless-catch
@@ -58,7 +58,7 @@ export async function createQuestion(params: CreateQuestionParams) {
 
     revalidatePath(path);
   } catch (e: any) {
-    Toast({
+    toast({
       title: e?.message || "Error generating result",
     });
   }
@@ -83,7 +83,7 @@ export async function editQuestion(params: EditQuestionParams) {
 
     revalidatePath(path);
   } catch (e: any) {
-    Toast({
+    toast({
       title: e?.message || "Error generating result",
     });
   }
@@ -104,7 +104,7 @@ export async function deleteQuestion(params: DeleteQuestionParams) {
 
     revalidatePath(path);
   } catch (e: any) {
-    Toast({
+    toast({
       title: e?.message || "Error generating result",
     });
   }
@@ -121,7 +121,7 @@ export async function getQuestionById(id: string) {
         .populate("author", { modal: User });
     }
   } catch (e: any) {
-    Toast({
+    toast({
       title: e?.message || "Error generating result",
     });
   }
@@ -166,7 +166,7 @@ export async function getQuestions(params: any) {
     const isNext = totalQuestions > skipAmount + questions.length;
     return { questions, isNext };
   } catch (e: any) {
-    Toast({
+    toast({
       title: e?.message || "Error generating result",
     });
   }
@@ -180,7 +180,7 @@ export async function getTopQuestions() {
       .sort({ views: -1 })
       .limit(5);
   } catch (e: any) {
-    Toast({
+    toast({
       title: e?.message || "Error generating result",
     });
   }
@@ -201,7 +201,7 @@ export async function getUserQuestions(params: any) {
       .skip(skipAmount)
       .limit(pageSize);
   } catch (e: any) {
-    Toast({
+    toast({
       title: e?.message || "Error generating result",
     });
   }
@@ -248,7 +248,7 @@ export async function upvoteQuestion(params: QuestionVoteParams) {
 
     revalidatePath(path);
   } catch (e: any) {
-    Toast({
+    toast({
       title: e?.message || "Error generating result",
     });
   }
@@ -292,7 +292,7 @@ export async function downvoteQuestion(params: QuestionVoteParams) {
 
     revalidatePath(path);
   } catch (e: any) {
-    Toast({
+    toast({
       title: e?.message || "Error generating result",
     });
   }
@@ -364,7 +364,7 @@ export async function getRecommendedQuestions(params: RecommendedParams) {
 
     return { questions: recommendedQuestions, isNext };
   } catch (e: any) {
-    Toast({
+    toast({
       title: e?.message || "Error generating result",
     });
   }

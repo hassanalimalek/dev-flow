@@ -7,7 +7,7 @@ import { getQuestionsByTagId } from "@/lib/actions/tag.action";
 import { URLProps } from "@/types";
 
 const TagDetails = async ({ params, searchParams }: URLProps) => {
-  const result = await getQuestionsByTagId({
+  const result: any = await getQuestionsByTagId({
     tagId: params.id,
     page: searchParams.page ? +searchParams.page : 1,
     searchQuery: searchParams.q,
@@ -58,7 +58,7 @@ const TagDetails = async ({ params, searchParams }: URLProps) => {
       <div className="mt-10">
         <Pagination
           pageNumber={searchParams?.page ? +searchParams.page : 1}
-          isNext={result.isNext || false}
+          isNext={result?.isNext || false}
         />
       </div>
     </>

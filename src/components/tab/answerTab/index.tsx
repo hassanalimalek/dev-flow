@@ -14,7 +14,7 @@ async function AnswerTab({ userId, clerkId, searchParams }: IndexProps) {
   return (
     <div>
       <div className="mt-10 flex w-full flex-col gap-6">
-        {answers.length > 0 ? (
+        {answers && answers.length > 0 ? (
           answers.map((answer) => (
             <AnswerCard
               key={answer._id}
