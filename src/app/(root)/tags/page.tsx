@@ -47,7 +47,7 @@ export default async function Tags({
         ></Filters>
       </div>
       <div className="mt-12 flex flex-wrap gap-4">
-        {result.tags.length > 0 ? (
+        {result && result.tags.length > 0 ? (
           result.tags?.map((tag: any) => (
             <Link
               key={tag._id}
@@ -82,7 +82,7 @@ export default async function Tags({
       <div className="mt-10">
         <Pagination
           pageNumber={searchParams?.page ? +searchParams.page : 1}
-          isNext={result?.isNext}
+          isNext={result?.isNext || false}
         />
       </div>
     </div>

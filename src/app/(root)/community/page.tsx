@@ -47,7 +47,7 @@ export default async function Community({
         />
       </div>
       <div className="mt-12 flex flex-wrap gap-4">
-        {users.length > 0 ? (
+        {users && users.length > 0 ? (
           users.map((user: any) => <UserCard user={user} key={user._id} />)
         ) : (
           <div>No users found</div>
@@ -56,7 +56,7 @@ export default async function Community({
       <div className="mt-10">
         <Pagination
           pageNumber={searchParams?.page ? +searchParams.page : 1}
-          isNext={isNext}
+          isNext={isNext || false}
         />
       </div>
     </div>
