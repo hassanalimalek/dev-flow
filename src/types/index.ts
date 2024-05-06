@@ -18,6 +18,8 @@ export interface Job {
   job_city?: string;
   job_state?: string;
   job_country?: string;
+  job_salary?: string;
+  country_code?: string;
 }
 
 export interface Country {
@@ -43,6 +45,11 @@ export interface BadgeCounts {
   GOLD: number;
   SILVER: number;
   BRONZE: number;
+}
+
+export enum EJOB_TYPE {
+  FULL = "Full Time",
+  PART = "Part Time",
 }
 
 export type BadgeCriteriaType = keyof typeof BADGE_CRITERIA;

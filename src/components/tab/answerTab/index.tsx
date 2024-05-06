@@ -11,7 +11,6 @@ interface IndexProps {
 
 async function AnswerTab({ userId, clerkId, searchParams }: IndexProps) {
   const answers = await getUserAnswers({ userId });
-  console.log("answers -->", answers);
   return (
     <div>
       <div className="mt-10 flex w-full flex-col gap-6">

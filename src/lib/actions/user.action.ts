@@ -184,7 +184,7 @@ export const createUser = async (params: any) => {
   // eslint-disable-next-line no-useless-catch
   try {
     connectToDatabase();
-    console.log("create user called @@@@", params);
+
     const { clerkId, name, username, email, picture } = params;
 
     const user = await User.create({

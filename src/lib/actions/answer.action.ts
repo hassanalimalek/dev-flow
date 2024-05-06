@@ -105,7 +105,6 @@ export async function getUserAnswers(params: any) {
       .skip(skipAmount)
       .limit(pageSize);
   } catch (e) {
-    x;
     throw e;
   }
 }

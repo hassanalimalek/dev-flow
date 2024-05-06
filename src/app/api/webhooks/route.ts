@@ -95,7 +95,7 @@ export async function POST(req: Request) {
   } else if (eventType === "user.deleted") {
     const { id } = evt.data;
     // Delete the mongo user
-    await deleteUser({ clerkId: id });
+    await deleteUser({ clerkId: id as string });
     return NextResponse.json({
       message: "OK",
       status: 200,

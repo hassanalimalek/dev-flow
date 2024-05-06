@@ -67,6 +67,7 @@ export const LocalSearchBar = ({
       <Input
         type="text"
         placeholder={placeholder}
+        value={search}
         onChange={(e) => setSearch(e.target.value)}
         className="paragraph-regular no-focus placeholder  
         background-light800_darkgradient

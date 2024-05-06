@@ -56,6 +56,18 @@ export const formatAndDivideNumber = (number: number): string => {
   }
 };
 
+export const formatSalary = (salary: number): string => {
+  if (salary >= 1000000) {
+    const millions = (salary / 1000000).toFixed(0);
+    return `$${millions}M`;
+  } else if (salary >= 1000) {
+    const thousands = (salary / 1000).toFixed(0);
+    return `$${thousands}K`;
+  } else {
+    return `$${salary}`;
+  }
+};
+
 export const getJoinedDate = (joinedAt: Date): string => {
   const formattedDate = moment(joinedAt).format("MMMM YYYY");
   return `Joined ${formattedDate}`;
@@ -129,3 +141,26 @@ export const assignBadges = (params: BadgeParam) => {
 
   return badgeCounts;
 };
+
+export function processJobTitle(title: string | undefined | null): string {
+  if (title === undefined || title === null) {
+    return "No Job Title";
+  }
+
+  const words = title.split(" "); // 2 words
+
+  const validWords = words.filter((word) => {
+    return (
+      word !== undefined &&
+      word !== null &&
+      word.toLowerCase() !== "undefined" &&
+      word.toLowerCase() !== "null"
+    );
+  });
+
+  if (validWords.length === 0) {
+    return "No Job Title";
+  }
+
+  return validWords.join(" ");
+}
