@@ -1,5 +1,6 @@
 import Job from "@/database/job.modal";
 import { connectToDatabase } from "../mongoose";
+import { Toast } from "@/components/ui/toast";
 
 export async function getJobs(params: any) {
   const { query, filter } = params;
@@ -23,8 +24,10 @@ export async function getJobs(params: any) {
     let jobs = await Job.find(findOption);
 
     return jobs;
-  } catch (error) {
-    console.error(`❌ ${error} ❌`);
+  } catch (e: any) {
+    Toast({
+      title: e?.message || "Error generating result",
+    });
   }
 }
 
@@ -34,7 +37,9 @@ export async function getJobCountries() {
     let countries = await Job.find().distinct("job_country");
 
     return countries;
-  } catch (error) {
-    console.error(`❌ ${error} ❌`);
+  } catch (e: any) {
+    Toast({
+      title: e?.message || "Error generating result",
+    });
   }
 }

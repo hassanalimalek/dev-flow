@@ -12,6 +12,7 @@ import {
 import { revalidatePath } from "next/cache";
 import User from "@/database/user.modal";
 import Interaction from "@/database/interaction.modal";
+import { Toast } from "@/components/ui/toast";
 
 export async function createAnswer(params: CreateAnswerParams) {
   try {
@@ -39,9 +40,10 @@ export async function createAnswer(params: CreateAnswerParams) {
     await User.findByIdAndUpdate(author, { $inc: { reputation: 10 } });
 
     revalidatePath(path);
-  } catch (error) {
-    console.error(`❌ ${error} ❌`);
-    throw error;
+  } catch (e: any) {
+    Toast({
+      title: e?.message || "Error generating result",
+    });
   }
 }
 export async function getAnswers(params: GetAnswersParams) {
@@ -84,8 +86,11 @@ export async function getAnswers(params: GetAnswersParams) {
     const isNext = totalAnswers > skipAmount + answers.length;
 
     return { answers, isNext };
-  } catch (error) {
-    console.log(error);
+  } catch (e: any) {
+    console.log(e);
+    Toast({
+      title: e?.message || "Error generating result",
+    });
   }
 }
 export async function getUserAnswers(params: any) {
@@ -104,8 +109,10 @@ export async function getUserAnswers(params: any) {
       .populate("author", { modal: User })
       .skip(skipAmount)
       .limit(pageSize);
-  } catch (e) {
-    throw e;
+  } catch (e: any) {
+    Toast({
+      title: e?.message || "Error generating result",
+    });
   }
 }
 export async function deleteAnswer({
@@ -120,8 +127,10 @@ export async function deleteAnswer({
     await Answer.deleteOne({ _id: answerId.toString() });
     revalidatePath(path);
     return;
-  } catch (e) {
-    throw e;
+  } catch (e: any) {
+    Toast({
+      title: e?.message || "Error generating result",
+    });
   }
 }
 export async function upvoteAnswer(params: AnswerVoteParams) {
@@ -164,9 +173,10 @@ export async function upvoteAnswer(params: AnswerVoteParams) {
     });
 
     revalidatePath(path);
-  } catch (error) {
-    console.error(`❌ ${error} ❌`);
-    throw error;
+  } catch (e: any) {
+    Toast({
+      title: e?.message || "Error generating result",
+    });
   }
 }
 
@@ -207,8 +217,9 @@ export async function downvoteAnswer(params: AnswerVoteParams) {
     });
 
     revalidatePath(path);
-  } catch (error) {
-    console.error(`❌ ${error} ❌`);
-    throw error;
+  } catch (e: any) {
+    Toast({
+      title: e?.message || "Error generating result",
+    });
   }
 }

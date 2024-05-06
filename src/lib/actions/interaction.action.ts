@@ -33,8 +33,9 @@ export async function viewQuestion(params: ViewQuestionParams) {
         question: questionId,
       });
     }
-  } catch (error) {
-    console.error(`❌ ${error} ❌`);
-    throw error;
+  } catch (e: any) {
+    Toast({
+      title: e?.message || "Error generating result",
+    });
   }
 }

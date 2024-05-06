@@ -19,6 +19,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { createAnswer } from "@/lib/actions/answer.action";
 import { toast } from "../ui/use-toast";
+import { Toast } from "../ui/toast";
 // import { createAnswer } from "@/lib/actions/answer.action";
 // import { usePathname } from "next/navigation";
 // import { toast } from "../ui/use-toast";
@@ -60,11 +61,14 @@ function AnswerForm({ mongoUserId, question, questionId }: Props) {
         // @ts-ignore
         editorRef.current.setContent("");
       }
-    } catch (e) {
+    } catch (e: any) {
       console.log("error in createAnswer", e);
-      throw e;
+      Toast({
+        title: e?.message || "Error generating result",
+      });
+    } finally {
+      setIsSubmitting(false);
     }
-    setIsSubmitting(false);
   }
   const generateAIAnswer = async () => {
     if (!mongoUserId) {

@@ -12,6 +12,7 @@ import { FilterQuery } from "mongoose";
 import Question from "@/database/question.modal";
 import { Filter } from "lucide-react";
 import { Console } from "console";
+import { Toast } from "@/components/ui/toast";
 
 export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
   // eslint-disable-next-line no-useless-catch
@@ -29,9 +30,10 @@ export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
       { name: "Tag 2", id: 2 },
       { name: "Tag 3", id: 3 },
     ];
-  } catch (error) {
-    console.error(`❌ ${error} ❌`);
-    throw error;
+  } catch (e: any) {
+    Toast({
+      title: e?.message || "Error generating result",
+    });
   }
 }
 export async function getPopularTags() {
@@ -43,9 +45,10 @@ export async function getPopularTags() {
       { $limit: 5 },
     ]);
     return popularTags;
-  } catch (error) {
-    console.error(`❌ ${error} ❌`);
-    throw error;
+  } catch (e: any) {
+    Toast({
+      title: e?.message || "Error generating result",
+    });
   }
 }
 
@@ -91,12 +94,12 @@ export async function getAllTags(params: GetAllTagsParams) {
 
     const isNext = totalTags > skipAmount + tags.length;
 
-
     return { tags, isNext };
     return tags;
-  } catch (error) {
-    console.error(`❌ ${error} ❌`);
-    throw error;
+  } catch (e: any) {
+    Toast({
+      title: e?.message || "Error generating result",
+    });
   }
 }
 
@@ -136,8 +139,9 @@ export async function getQuestionsByTagId(params: GetQuestionsByTagIdParams) {
     const questions = tag.questions;
 
     return { tagTitle: tag.name, questions, isNext };
-  } catch (error) {
-    console.error(`❌ ${error} ❌`);
-    throw error;
+  } catch (e: any) {
+    Toast({
+      title: e?.message || "Error generating result",
+    });
   }
 }

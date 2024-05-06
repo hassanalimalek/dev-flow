@@ -15,6 +15,7 @@ import {
 import { revalidatePath } from "next/cache";
 import Interaction from "@/database/interaction.modal";
 import { FilterQuery } from "mongoose";
+import { Toast } from "@/components/ui/toast";
 
 export async function createQuestion(params: CreateQuestionParams) {
   // eslint-disable-next-line no-useless-catch
@@ -56,8 +57,10 @@ export async function createQuestion(params: CreateQuestionParams) {
     await User.findByIdAndUpdate(author, { $inc: { reputation: 5 } });
 
     revalidatePath(path);
-  } catch (e) {
-    throw e;
+  } catch (e: any) {
+    Toast({
+      title: e?.message || "Error generating result",
+    });
   }
 }
 
@@ -79,8 +82,10 @@ export async function editQuestion(params: EditQuestionParams) {
     await question.save();
 
     revalidatePath(path);
-  } catch (error) {
-    console.log(error);
+  } catch (e: any) {
+    Toast({
+      title: e?.message || "Error generating result",
+    });
   }
 }
 
@@ -98,8 +103,10 @@ export async function deleteQuestion(params: DeleteQuestionParams) {
     );
 
     revalidatePath(path);
-  } catch (error) {
-    console.log(error);
+  } catch (e: any) {
+    Toast({
+      title: e?.message || "Error generating result",
+    });
   }
 }
 
@@ -113,9 +120,10 @@ export async function getQuestionById(id: string) {
         .populate("tags", { modal: Tag })
         .populate("author", { modal: User });
     }
-  } catch (e) {
-    console.log("error in getQuestionById", e);
-    throw e;
+  } catch (e: any) {
+    Toast({
+      title: e?.message || "Error generating result",
+    });
   }
 }
 
@@ -157,9 +165,10 @@ export async function getQuestions(params: any) {
     const totalQuestions = await Question.countDocuments(query);
     const isNext = totalQuestions > skipAmount + questions.length;
     return { questions, isNext };
-  } catch (e) {
-    console.log("error in getQuestions", e);
-    throw e;
+  } catch (e: any) {
+    Toast({
+      title: e?.message || "Error generating result",
+    });
   }
 }
 export async function getTopQuestions() {
@@ -170,8 +179,10 @@ export async function getTopQuestions() {
       .populate("author", { modal: User })
       .sort({ views: -1 })
       .limit(5);
-  } catch (e) {
-    throw e;
+  } catch (e: any) {
+    Toast({
+      title: e?.message || "Error generating result",
+    });
   }
 }
 
@@ -189,9 +200,10 @@ export async function getUserQuestions(params: any) {
       .populate("author", { modal: User })
       .skip(skipAmount)
       .limit(pageSize);
-  } catch (e) {
-    console.log("e -->", e);
-    throw e;
+  } catch (e: any) {
+    Toast({
+      title: e?.message || "Error generating result",
+    });
   }
 }
 
@@ -235,9 +247,10 @@ export async function upvoteQuestion(params: QuestionVoteParams) {
     });
 
     revalidatePath(path);
-  } catch (error) {
-    console.error(`❌ ${error} ❌`);
-    throw error;
+  } catch (e: any) {
+    Toast({
+      title: e?.message || "Error generating result",
+    });
   }
 }
 
@@ -278,9 +291,10 @@ export async function downvoteQuestion(params: QuestionVoteParams) {
     });
 
     revalidatePath(path);
-  } catch (error) {
-    console.error(`❌ ${error} ❌`);
-    throw error;
+  } catch (e: any) {
+    Toast({
+      title: e?.message || "Error generating result",
+    });
   }
 }
 
@@ -349,8 +363,9 @@ export async function getRecommendedQuestions(params: RecommendedParams) {
     const isNext = totalQuestions > skipAmount + recommendedQuestions.length;
 
     return { questions: recommendedQuestions, isNext };
-  } catch (error) {
-    console.error("Error getting recommended questions:", error);
-    throw error;
+  } catch (e: any) {
+    Toast({
+      title: e?.message || "Error generating result",
+    });
   }
 }

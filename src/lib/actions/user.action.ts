@@ -6,7 +6,6 @@ import { revalidatePath } from "next/cache";
 import Question from "@/database/question.modal";
 import {
   DeleteUserParams,
-  GetAllUsersParams,
   GetSavedQuestionsParams,
   GetUserByIdParams,
   ToggleSaveQuestionParams,
@@ -17,6 +16,7 @@ import Tag from "@/database/tag.modal";
 import Answer from "@/database/answer.modal";
 import { BadgeCriteriaType } from "@/types";
 import { assignBadges } from "../utils";
+import { Toast } from "@/components/ui/toast";
 
 export const getUserById = async (params: GetUserByIdParams) => {
   // eslint-disable-next-line no-useless-catch
@@ -28,9 +28,10 @@ export const getUserById = async (params: GetUserByIdParams) => {
     const user = await User.findOne({ clerkId: userId });
 
     return user;
-  } catch (error) {
-    console.error(`❌ ${error} ❌`);
-    throw error;
+  } catch (e: any) {
+    Toast({
+      title: e?.message || "Error generating result",
+    });
   }
 };
 
@@ -113,9 +114,10 @@ export const getUserInfo = async (params: GetUserByIdParams) => {
     const badgeCounts = assignBadges({ criteria });
 
     return { user, totalQuestions, totalAnswers, badgeCounts };
-  } catch (error) {
-    console.error(`❌ ${error} ❌`);
-    throw error;
+  } catch (e: any) {
+    Toast({
+      title: e?.message || "Error generating result",
+    });
   }
 };
 
@@ -160,10 +162,10 @@ export const getAllUsers = async (params: any = {}) => {
     const totalUsers = await User.countDocuments();
     const isNext = totalUsers > skipAmount + users.length;
     return { users, isNext };
-    return users;
-  } catch (error) {
-    console.error(`❌ ${error} ❌`);
-    throw error;
+  } catch (e: any) {
+    Toast({
+      title: e?.message || "Error generating result",
+    });
   }
 };
 
@@ -174,9 +176,10 @@ export const getUserTopTags = async () => {
 
     const users = await User.find();
     return users;
-  } catch (error) {
-    console.error(`❌ ${error} ❌`);
-    throw error;
+  } catch (e: any) {
+    Toast({
+      title: e?.message || "Error generating result",
+    });
   }
 };
 
@@ -196,9 +199,10 @@ export const createUser = async (params: any) => {
     });
 
     return user;
-  } catch (error) {
-    console.error(`❌ ${error} ❌`);
-    throw error;
+  } catch (e: any) {
+    Toast({
+      title: e?.message || "Error generating result",
+    });
   }
 };
 
@@ -213,8 +217,10 @@ export async function updateUser(params: UpdateUserParams) {
     });
 
     revalidatePath(path);
-  } catch (error) {
-    console.log(error);
+  } catch (e: any) {
+    Toast({
+      title: e?.message || "Error generating result",
+    });
   }
 }
 
@@ -238,8 +244,10 @@ export async function deleteUser(params: DeleteUserParams) {
     const deletedUser = await User.findByIdAndDelete(user._id);
 
     return deletedUser;
-  } catch (error) {
-    console.log(error);
+  } catch (e: any) {
+    Toast({
+      title: e?.message || "Error generating result",
+    });
   }
 }
 
@@ -274,9 +282,10 @@ export async function toggleSaveQuestion(params: ToggleSaveQuestionParams) {
     }
 
     revalidatePath(path);
-  } catch (error) {
-    console.error(`❌ ${error} ❌`);
-    throw error;
+  } catch (e: any) {
+    Toast({
+      title: e?.message || "Error generating result",
+    });
   }
 }
 
@@ -355,8 +364,9 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
     const savedQuestions = user.saved;
 
     return { questions: savedQuestions, isNext };
-  } catch (error) {
-    console.error(`❌ ${error} ❌`);
-    throw error;
+  } catch (e: any) {
+    Toast({
+      title: e?.message || "Error generating result",
+    });
   }
 }
