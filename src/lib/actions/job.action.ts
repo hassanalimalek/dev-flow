@@ -1,9 +1,8 @@
 import Job from "@/database/job.modal";
 import { connectToDatabase } from "../mongoose";
-import { Toast } from "@/components/ui/toast";
+import { toast } from "@/components/ui/use-toast";
 
 export async function getJobs(params: any) {
-
   const { searchKey, filter, page = 1, pageSize = 10 } = params;
 
   // Calculate the number of posts to skip based on the page
@@ -30,7 +29,7 @@ export async function getJobs(params: any) {
     let isNext = jobsCount > skipAmount + jobs.length;
     return { jobs, isNext };
   } catch (e: any) {
-    Toast({
+    toast({
       title: e?.message || "Error generating result",
     });
   }
@@ -43,7 +42,7 @@ export async function getJobCountries() {
 
     return countries;
   } catch (e: any) {
-    Toast({
+    toast({
       title: e?.message || "Error generating result",
     });
   }

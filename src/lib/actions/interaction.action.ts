@@ -4,6 +4,7 @@ import Question from "@/database/question.modal";
 import { connectToDatabase } from "../mongoose";
 import { ViewQuestionParams } from "./shared.types";
 import Interaction from "@/database/interaction.modal";
+import { toast } from "@/components/ui/use-toast";
 
 export async function viewQuestion(params: ViewQuestionParams) {
   try {
@@ -19,7 +20,6 @@ export async function viewQuestion(params: ViewQuestionParams) {
       });
 
       if (existingInteraction) {
-
         return;
       }
 
@@ -34,7 +34,7 @@ export async function viewQuestion(params: ViewQuestionParams) {
       });
     }
   } catch (e: any) {
-    Toast({
+    toast({
       title: e?.message || "Error generating result",
     });
   }

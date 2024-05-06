@@ -14,7 +14,7 @@ async function Index({ userId, clerkId, searchParams }: IndexProps) {
   return (
     <div>
       <div className="mt-10 flex w-full flex-col gap-6">
-        {questions.length > 0 ? (
+        {questions && questions.length > 0 ? (
           questions.map((question) => (
             <QuestionCard
               clerkId={clerkId}

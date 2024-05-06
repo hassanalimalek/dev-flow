@@ -30,7 +30,8 @@ const GlobalResult = () => {
           query: global,
           type,
         });
-        setResult(JSON.parse(res));
+        setResult(JSON.parse(res ?? ""));
+
       } catch (error) {
         console.log(error);
         throw error;

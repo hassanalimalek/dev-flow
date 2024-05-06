@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 };
 async function Page({ params, searchParams }: any) {
   const { id } = params;
-  const userData = await getUserInfo({ userId: id });
+  const userData: any = await getUserInfo({ userId: id });
 
 
   return (
@@ -29,8 +29,8 @@ async function Page({ params, searchParams }: any) {
         <div className="grid grid-cols-1 gap-5 xs:grid-cols-2 md:grid-cols-4">
           <StatCard
             data={[
-              { title: "Questions", value: userData.totalQuestions },
-              { title: "Answers", value: userData.totalAnswers },
+              { title: "Questions", value: userData?.totalQuestions },
+              { title: "Answers", value: userData?.totalAnswers },
             ]}
           />
           <StatBadgeCard
@@ -64,14 +64,14 @@ async function Page({ params, searchParams }: any) {
           <TabsContent value="questions">
             <QuestionTab
               clerkId={id}
-              userId={userData.user?._id}
+              userId={userData?.user?._id}
               searchParams={searchParams}
             />
           </TabsContent>
           <TabsContent value="answers">
             <AnswerTab
               clerkId={id}
-              userId={userData.user?._id}
+              userId={userData?.user?._id}
               searchParams={searchParams}
             />
           </TabsContent>

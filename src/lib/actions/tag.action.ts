@@ -10,9 +10,7 @@ import {
 import Tag, { ITag } from "@/database/tag.modal";
 import { FilterQuery } from "mongoose";
 import Question from "@/database/question.modal";
-import { Filter } from "lucide-react";
-import { Console } from "console";
-import { Toast } from "@/components/ui/toast";
+import { toast } from "@/components/ui/use-toast";
 
 export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
   // eslint-disable-next-line no-useless-catch
@@ -31,7 +29,7 @@ export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
       { name: "Tag 3", id: 3 },
     ];
   } catch (e: any) {
-    Toast({
+    toast({
       title: e?.message || "Error generating result",
     });
   }
@@ -46,7 +44,7 @@ export async function getPopularTags() {
     ]);
     return popularTags;
   } catch (e: any) {
-    Toast({
+    toast({
       title: e?.message || "Error generating result",
     });
   }
@@ -97,7 +95,7 @@ export async function getAllTags(params: GetAllTagsParams) {
     return { tags, isNext };
     return tags;
   } catch (e: any) {
-    Toast({
+    toast({
       title: e?.message || "Error generating result",
     });
   }
@@ -140,7 +138,7 @@ export async function getQuestionsByTagId(params: GetQuestionsByTagIdParams) {
 
     return { tagTitle: tag.name, questions, isNext };
   } catch (e: any) {
-    Toast({
+    toast({
       title: e?.message || "Error generating result",
     });
   }
