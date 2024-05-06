@@ -1,6 +1,7 @@
 import JobCard from "@/components/card/jobCard";
 import Filters from "@/components/shared/filter";
 import NoResult from "@/components/shared/noResult";
+import Pagination from "@/components/shared/pagination";
 import { LocalSearchBar } from "@/components/shared/search/localSearchBar";
 import { getJobCountries, getJobs } from "@/lib/actions/job.action";
 import React from "react";
@@ -13,7 +14,7 @@ async function Page({
   const query = searchParams?.q;
 
   const filter = searchParams?.filter;
-  const jobs = await getJobs({ query, filter });
+  const result = await getJobs({ query, filter });
   const jobCountries = await getJobCountries();
 
   return (
@@ -32,7 +33,7 @@ async function Page({
         <Filters
           filters={[
             { name: "All", value: "all" },
-            ...jobCountries?.map((country) => ({
+            ...(jobCountries ?? []).map((country) => ({
               name: country,
               value: country,
             })),
@@ -41,13 +42,19 @@ async function Page({
         />
       </div>
       <div className="mt-10 flex w-full flex-col gap-6">
-        {jobs?.length > 0 ? (
-          jobs.map((job) => {
+        {result && result.jobs ? (
+          result.jobs?.map((job: any) => {
             return <JobCard job={job} key={job?.id} />;
           })
         ) : (
           <NoResult title="No Jobs Available" />
         )}
+      </div>
+      <div className="mt-10">
+        <Pagination
+          pageNumber={searchParams?.page ? +searchParams.page : 1}
+          isNext={result?.isNext || false}
+        />
       </div>
     </>
   );

@@ -85,7 +85,7 @@ px-4 py-3 !text-light-900"
       </div>
       <HomeFilters />
       <div className="mt-10 flex w-full flex-col gap-6">
-        {result.questions.length > 0 ? (
+        {result && result.questions.length > 0 ? (
           result.questions.map((question) => (
             <QuestionCard
               key={question._id}
@@ -111,7 +111,7 @@ px-4 py-3 !text-light-900"
       <div className="mt-10">
         <Pagination
           pageNumber={searchParams?.page ? +searchParams.page : 1}
-          isNext={result?.isNext}
+          isNext={result?.isNext || false}
         />
       </div>
     </>
